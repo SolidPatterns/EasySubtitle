@@ -2,6 +2,7 @@
 using System.CodeDom.Compiler;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NUnit.Framework;
 using OSDBnet;
@@ -18,24 +19,34 @@ namespace EasySubtitle.Tests
 
             const string filePath = "F:/Videos/Series/Arrow Season 2 DIMENSION_/Arrow.S02E12.720p.HDTV.X264-DIMENSION.mkv";
             var subtitles = client.SearchSubtitlesFromFile("tur", filePath);
-            foreach (var subtitle in subtitles)
+
+            var subtitle = subtitles.FirstOrDefault();
+            if (subtitle != null)
             {
                 Debug.WriteLine(subtitle.SubtitleFileName);
                 Debug.WriteLine(subtitle.SubTitleDownloadLink);
                 string directoryName = Path.GetDirectoryName(filePath);
                 Debug.WriteLine(directoryName);
-                client.DownloadSubtitleToPath(directoryName, subtitle);
+
+                var directoryPath = Path.GetDirectoryName(filePath);
+                client.DownloadSubtitleToPath(directoryPath, subtitle);
+                File.Move(String.Concat(directoryPath, Path.DirectorySeparatorChar.ToString(), subtitle.SubtitleFileName)
+                    , String.Concat(directoryPath, Path.DirectorySeparatorChar.ToString(), Path.GetFileNameWithoutExtension(filePath), ".srt"));
             }
+
+
         }
 
         [Test]
         public void Register()
         {
-            const string registerDllName = "D:/Sources/Workspaces/GitHub/EasySubtitle/EasySubtitle.Core/bin/Release/EasySubtitle.Core.dll";
-            const string srmFileLocation = "D:/Sources/Workspaces/GitHub/EasySubtitle/EasySubtitle.Core/bin/Release/srm.exe";
+            const string registerDllName = "D:/Sources/Workspaces/GitHub/EasySubtitle/EasySubtitle.Core/bin/Debug/EasySubtitle.Core.dll";
+            const string srmFileLocation = "D:/Sources/Workspaces/GitHub/EasySubtitle/EasySubtitle.Core/bin/Debug/srm.exe";
+            var dir = System.Runtime.InteropServices.RuntimeEnvironment.GetRuntimeDirectory();
+            Console.WriteLine(dir);
             Process.Start(new ProcessStartInfo()
             {
-                FileName = System.Runtime.InteropServices.RuntimeEnvironment.GetRuntimeDirectory() + "RegAsm.exe",
+                FileName = dir + "RegAsm.exe",
                 Verb = "runas",
                 Arguments = registerDllName
             });
@@ -55,5 +66,7 @@ namespace EasySubtitle.Tests
                 catch { }
             }
         }
+
+
     }
 }

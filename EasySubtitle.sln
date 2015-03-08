@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasySubtitle.Console", "EasySubtitle.Console\EasySubtitle.Console.csproj", "{A87385EA-2865-4DA2-865A-1D88021D7791}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasySubtitle.Core", "EasySubtitle.Core\EasySubtitle.Core.csproj", "{4D780746-B4DD-4E3D-8CF9-AEAC47919054}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasySubtitle.ShellExtension", "EasySubtitle.ShellExtension\EasySubtitle.ShellExtension.csproj", "{4D780746-B4DD-4E3D-8CF9-AEAC47919054}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasySubtitle.Tests", "EasySubtitle.Tests\EasySubtitle.Tests.csproj", "{8FB6E29C-A432-404A-A92B-F538F3860C53}"
 EndProject
