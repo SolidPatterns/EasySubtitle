@@ -75,9 +75,6 @@ namespace EasySubtitle.ShellExtension
 
         private void FindSubtitles()
         {
-            ProgressBar bar = new ProgressBar();
-            bar.
-            bar.Increment(1);
             //var app = new App();
             //app.Run(new Progress());
 
