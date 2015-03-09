@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,6 +24,26 @@ namespace EasySubtitle.WPF
         public MainWindow()
         {
             InitializeComponent();
+
+            var progressDialog = new ProgressDialogWindow();
+            var progressDialogViewModel = new ProgressDialogViewModel();
+
+            var workList = Enumerable.Range(0, 999).ToArray();
+            progressDialogViewModel.Progress = 0;
+            progressDialogViewModel.ProgressMax = workList.Length;
+
+            progressDialog.DataContext = progressDialogViewModel;
+            progressDialog.Show();
+
+
+            Task.Factory.StartNew(() =>
+            {
+                foreach (var i in workList)
+                {
+                    Thread.Sleep(300);
+                    progressDialogViewModel.IncrementProgressCounter(10);
+                }
+            });
         }
     }
 }

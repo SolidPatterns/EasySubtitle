@@ -75,6 +75,12 @@ namespace EasySubtitle.ShellExtension
 
         private void FindSubtitles()
         {
+            ProgressBar bar = new ProgressBar();
+            bar.
+            bar.Increment(1);
+            //var app = new App();
+            //app.Run(new Progress());
+
             Task.Factory.StartNew(() =>
             {
                 IList<Task> tasks = new List<Task>();
@@ -104,13 +110,14 @@ namespace EasySubtitle.ShellExtension
 
                 //  Show the ouput.
                 MessageBox.Show("Finding subtitles completed.");
+                
             });
         }
 
         private void FindSubtitlesAdvanced()
         {
-            var window = new MainWindow();
-            window.Show();
+            var app = new App();
+            app.Run(new MainWindow());
         }
     }
 }
