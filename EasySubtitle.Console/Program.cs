@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -15,20 +16,23 @@ namespace EasySubtitle.Console
         {
             var app = new App();
 
-            var progressDialog = new ProgressDialogWindow();
-            var progressDialogViewModel = new ProgressDialogViewModel();
+            //RunProgressDialog(app);
 
-            //var workList = Enumerable.Range(0, 999).ToArray();
-            //progressDialogViewModel.Progress = 0;
-            //progressDialogViewModel.ProgressMax = workList.Length;
-
-            progressDialog.DataContext = progressDialogViewModel;
-            
-
-            app.Run(progressDialog);
-            //progressDialog.Show();
+            var advancedSearchSubtitles = new AdvancedSubtitlesWindow
+            {
+                DataContext = new SearchAdvancedSubtitleViewModel(Directory.GetFiles("F:/Videos/Series/Arrow/S3", "*.mkv"))
+            };
+            app.Run(advancedSearchSubtitles);
 
             System.Console.ReadLine();
+        }
+
+        private static void RunProgressDialog(App app)
+        {
+            var progressDialog = new ProgressDialogWindow();
+            var progressDialogViewModel = new ProgressDialogViewModel();
+            progressDialog.DataContext = progressDialogViewModel;
+            app.Run(progressDialog);
         }
     }
 }

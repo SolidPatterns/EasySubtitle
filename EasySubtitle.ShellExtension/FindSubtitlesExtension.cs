@@ -114,7 +114,7 @@ namespace EasySubtitle.ShellExtension
         private void FindSubtitlesAdvanced()
         {
             var app = new App();
-            app.Run(new MainWindow());
+            app.Run(new AdvancedSubtitlesWindow());
         }
     }
 }
