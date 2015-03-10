@@ -9,10 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasySubtitle.ShellExtension
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasySubtitle.Tests", "EasySubtitle.Tests\EasySubtitle.Tests.csproj", "{8FB6E29C-A432-404A-A92B-F538F3860C53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasySubtitle.WPF", "EasySubtitle.WPF\EasySubtitle.WPF.csproj", "{E18BFF67-6B78-4879-8BAB-48053DC6C3BD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasySubtitle.Business", "EasySubtitle.Business\EasySubtitle.Business.csproj", "{FA816B98-0415-440E-8FB0-614EDD77C998}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,14 +27,6 @@ Global
 		{8FB6E29C-A432-404A-A92B-F538F3860C53}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8FB6E29C-A432-404A-A92B-F538F3860C53}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8FB6E29C-A432-404A-A92B-F538F3860C53}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E18BFF67-6B78-4879-8BAB-48053DC6C3BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E18BFF67-6B78-4879-8BAB-48053DC6C3BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E18BFF67-6B78-4879-8BAB-48053DC6C3BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E18BFF67-6B78-4879-8BAB-48053DC6C3BD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FA816B98-0415-440E-8FB0-614EDD77C998}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FA816B98-0415-440E-8FB0-614EDD77C998}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FA816B98-0415-440E-8FB0-614EDD77C998}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FA816B98-0415-440E-8FB0-614EDD77C998}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
