@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace EasySubtitle.WPF
+namespace EasySubtitle.WPF.Windows
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

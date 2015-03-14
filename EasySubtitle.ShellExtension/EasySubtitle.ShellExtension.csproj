@@ -81,6 +81,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EasySubtitle.Business\EasySubtitle.Business.csproj">
+      <Project>{FA816B98-0415-440E-8FB0-614EDD77C998}</Project>
+      <Name>EasySubtitle.Business</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EasySubtitle.WPF\EasySubtitle.WPF.csproj">
       <Project>{E18BFF67-6B78-4879-8BAB-48053DC6C3BD}</Project>
       <Name>EasySubtitle.WPF</Name>

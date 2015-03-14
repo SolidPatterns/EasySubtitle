@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Windows.Input;
+using EasySubtitle.WPF.ViewModels;
 
-namespace EasySubtitle.WPF
+namespace EasySubtitle.WPF.Commands
 {
     public class CancelCommand : ICommand
     {

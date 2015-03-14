@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using EasySubtitle.Business;
 using EasySubtitle.WPF;
+using EasySubtitle.WPF.Windows;
 using SharpShell.Attributes;
 using SharpShell.SharpContextMenu;
 

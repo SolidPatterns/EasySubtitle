@@ -6,6 +6,10 @@ using OSDBnet;
 
 namespace EasySubtitle.Business
 {
+    //todo: make this service return found subtitle dto's
+    //todo: create a download service that downloads given subtitles
+    //todo: create a subtitle engine that finds subtitles and downloads them if asked to
+    
     public class SubtitleService : ISubtitleService
     {
         private readonly SubtitleServiceCredentials _credentials;

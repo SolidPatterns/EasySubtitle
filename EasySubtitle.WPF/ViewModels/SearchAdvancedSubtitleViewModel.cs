@@ -2,8 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
+using EasySubtitle.WPF.Commands;
+using EasySubtitle.WPF.Models;
+using EasySubtitle.WPF.Windows;
 
-namespace EasySubtitle.WPF
+namespace EasySubtitle.WPF.ViewModels
 {
     public class SearchAdvancedSubtitleViewModel : ViewModelBase
     {

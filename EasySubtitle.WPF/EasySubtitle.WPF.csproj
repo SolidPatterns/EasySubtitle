@@ -49,6 +49,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CookComputing.XmlRpcV2">
+      <HintPath>..\packages\xmlrpcnet.2.5.0\lib\net20\CookComputing.XmlRpcV2.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="OSDBnet">
+      <HintPath>..\packages\OSDBnet.0.3.2.0\lib\net40\OSDBnet.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -68,8 +77,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DelegateCommand.cs" />
+    <Compile Include="FoundSubtitle.cs" />
+    <Compile Include="SearchAdvancedSubtitleViewModel.cs" />
+    <Compile Include="SelectedFile.cs" />
     <Compile Include="ViewModelBase.cs" />
-    <Page Include="AdvancedSubtitlesWindow.xaml">
+    <Page Include="Windows\AdvancedSubtitlesWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -77,11 +90,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AdvancedSubtitlesWindow.xaml.cs">
+    <Compile Include="Windows\AdvancedSubtitlesWindow.xaml.cs">
       <DependentUpon>AdvancedSubtitlesWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ProgressDialogWindow.xaml">
+    <Page Include="Windows\ProgressDialogWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -89,7 +102,7 @@
   <ItemGroup>
     <Compile Include="CancelCommand.cs" />
     <Compile Include="ProgressDialogViewModel.cs" />
-    <Compile Include="ProgressDialogWindow.xaml.cs">
+    <Compile Include="Windows\ProgressDialogWindow.xaml.cs">
       <DependentUpon>ProgressDialogWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -109,6 +122,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

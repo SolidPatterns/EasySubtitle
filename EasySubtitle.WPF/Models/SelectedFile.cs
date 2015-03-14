@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace EasySubtitle.WPF
+namespace EasySubtitle.WPF.Models
 {
     public class SelectedFile
     {

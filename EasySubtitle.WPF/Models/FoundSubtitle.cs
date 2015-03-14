@@ -1,6 +1,6 @@
 using OSDBnet;
 
-namespace EasySubtitle.WPF
+namespace EasySubtitle.WPF.Models
 {
     public class FoundSubtitle : Subtitle
     {
