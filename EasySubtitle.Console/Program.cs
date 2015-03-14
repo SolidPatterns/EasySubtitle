@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using EasySubtitle.WPF;
+using EasySubtitle.WPF.ViewModels;
 using EasySubtitle.WPF.Windows;
 
 namespace EasySubtitle.Console

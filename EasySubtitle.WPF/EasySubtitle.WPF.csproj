@@ -77,11 +77,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="DelegateCommand.cs" />
-    <Compile Include="FoundSubtitle.cs" />
-    <Compile Include="SearchAdvancedSubtitleViewModel.cs" />
-    <Compile Include="SelectedFile.cs" />
-    <Compile Include="ViewModelBase.cs" />
+    <Compile Include="Commands\CancelCommand.cs" />
+    <Compile Include="Commands\DelegateCommand.cs" />
+    <Compile Include="Models\FoundSubtitle.cs" />
+    <Compile Include="Models\SelectedFile.cs" />
     <Page Include="Windows\AdvancedSubtitlesWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -90,6 +89,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ViewModels\ProgressDialogViewModel.cs" />
+    <Compile Include="ViewModels\SearchAdvancedSubtitleViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Windows\AdvancedSubtitlesWindow.xaml.cs">
       <DependentUpon>AdvancedSubtitlesWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -100,8 +102,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CancelCommand.cs" />
-    <Compile Include="ProgressDialogViewModel.cs" />
     <Compile Include="Windows\ProgressDialogWindow.xaml.cs">
       <DependentUpon>ProgressDialogWindow.xaml</DependentUpon>
     </Compile>

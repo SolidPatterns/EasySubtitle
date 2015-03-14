@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows;
+using EasySubtitle.WPF.ViewModels;
 
 namespace EasySubtitle.WPF.Windows
 {
