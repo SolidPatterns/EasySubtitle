@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using EasySubtitle.Business;
 using EasySubtitle.WPF;
-using OSDBnet;
 using SharpShell.Attributes;
 using SharpShell.SharpContextMenu;
 
@@ -16,6 +14,7 @@ namespace EasySubtitle.ShellExtension
     [COMServerAssociation(AssociationType.AllFiles)]
     public class FindSubtitlesExtension : SharpContextMenu
     {
+        private readonly string[] _languages = { "tur" };
         //public void Test()
         //{
         //    IAnonymousClient client = Osdb.Login("OSTestUserAgent");
@@ -80,35 +79,26 @@ namespace EasySubtitle.ShellExtension
 
             Task.Factory.StartNew(() =>
             {
-                IList<Task> tasks = new List<Task>();
-
-                using (IAnonymousClient client = Osdb.Login("OSTestUserAgent"))
+                IList<Task> tasks = SelectedItemPaths.Select(path => Task.Factory.StartNew(() =>
                 {
-                    foreach (var filePath in SelectedItemPaths)
-                    {
-                        var task = Task.Factory.StartNew(() =>
-                        {
-                            var subtitles = client.SearchSubtitlesFromFile("tur", filePath);
-                            if (!subtitles.Any())
-                                return;
-                            var subtitle = subtitles.OrderByDescending(x => x.Rating).FirstOrDefault();
-                            if (subtitle != null)
-                            {
-                                var directoryPath = Path.GetDirectoryName(filePath);
-                                client.DownloadSubtitleToPath(directoryPath, subtitle);
-                                File.Move(String.Concat(directoryPath, Path.DirectorySeparatorChar.ToString(), subtitle.SubtitleFileName)
-                                    , String.Concat(directoryPath, Path.DirectorySeparatorChar.ToString(), Path.GetFileNameWithoutExtension(filePath), ".srt"));
-                            }
-                        });
-                        tasks.Add(task);
-                    }
-                    Task.WaitAll(tasks.ToArray());
-                }
+                    var subtitleService = GetSubtitleService();
+                    subtitleService.FindSubtitles(path, _languages);
+                })).ToList();
+
+                Task.WaitAll(tasks.ToArray());
 
                 //  Show the ouput.
                 MessageBox.Show("Finding subtitles completed.");
-                
+
             });
+        }
+
+        private ISubtitleService GetSubtitleService()
+        {
+            var subtitleService =
+                SubtitleServiceFactory.GetSubtitleService(
+                    new SubtitleServiceCredentials { UserAgent = "OSTestUserAgent" });
+            return subtitleService;
         }
 
         private void FindSubtitlesAdvanced()
