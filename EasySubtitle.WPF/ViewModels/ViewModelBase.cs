@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace EasySubtitle.WPF
+namespace EasySubtitle.WPF.ViewModels
 {
     public abstract class ViewModelBase : INotifyPropertyChanging, INotifyPropertyChanged
     {

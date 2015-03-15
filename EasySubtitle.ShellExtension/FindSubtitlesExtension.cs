@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using EasySubtitle.Business;
-using EasySubtitle.WPF;
+using EasySubtitle.WPF.ViewModels;
+using EasySubtitle.WPF.Windows;
+using OSDBnet;
 using SharpShell.Attributes;
 using SharpShell.SharpContextMenu;
 
@@ -15,11 +18,6 @@ namespace EasySubtitle.ShellExtension
     public class FindSubtitlesExtension : SharpContextMenu
     {
         private readonly string[] _languages = { "tur" };
-        //public void Test()
-        //{
-        //    IAnonymousClient client = Osdb.Login("OSTestUserAgent");
-
-        //}
 
         protected override bool CanShowMenu()
         {
@@ -72,39 +70,57 @@ namespace EasySubtitle.ShellExtension
             return findSubtitlesMenuItem;
         }
 
-        private void FindSubtitles()
+        private async void FindSubtitles()
         {
             //var app = new App();
             //app.Run(new Progress());
 
-            Task.Factory.StartNew(() =>
+            var subtitleService = GetSubtitleService();
+            IAnonymousClient[] client = {SubtitleClientFactory.GetSubtitleClient()};
+
+            try
             {
-                IList<Task> tasks = SelectedItemPaths.Select(path => Task.Factory.StartNew(() =>
+                var task = Task.Factory.StartNew(() =>
                 {
-                    var subtitleService = GetSubtitleService();
-                    subtitleService.FindSubtitles(path, _languages);
-                })).ToList();
+                    IAnonymousClient anonymousClient = client[0];
+                    Parallel.ForEach(SelectedItemPaths, (path, state, count) =>
+                    {
+                        Debug.WriteLine("Finding subtitles for {0}", args: path);
+                        Debug.WriteLine("Count: {0}", args: count);
+                        var subtitle = subtitleService.FindSubtitles(anonymousClient, path, _languages).FirstOrDefault();
+                        if (subtitle == null)
+                            return;
+                        subtitleService.DownloadSubtitleAdjusted(anonymousClient, subtitle, path);
+                    });
+                });
 
-                Task.WaitAll(tasks.ToArray());
-
-                //  Show the ouput.
-                MessageBox.Show("Finding subtitles completed.");
-
-            });
+                await task;
+                MessageBox.Show("Finding subtitles completed.", "Done", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(String.Format("Error occured. Details: {0}.", e.Message), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                client[0].Dispose();
+                client[0] = null;
+            }
         }
 
         private ISubtitleService GetSubtitleService()
         {
-            var subtitleService =
-                SubtitleServiceFactory.GetSubtitleService(
-                    new SubtitleServiceCredentials { UserAgent = "OSTestUserAgent" });
+            var subtitleService = EasySubtitleFactory.Instance.GetSubtitleService();
             return subtitleService;
         }
 
         private void FindSubtitlesAdvanced()
         {
-            var app = new App();
-            app.Run(new AdvancedSubtitlesWindow());
+            var advancedSearchSubtitles = new AdvancedSubtitlesWindow
+            {
+                DataContext = new SearchAdvancedSubtitleViewModel(SelectedItemPaths, EasySubtitleFactory.Instance.GetSubtitleService())
+            };
+            advancedSearchSubtitles.Show();
         }
     }
 }

@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Input;
 
-namespace EasySubtitle.WPF
+namespace EasySubtitle.WPF.Commands
 {
     public class DelegateCommand : ICommand
     {

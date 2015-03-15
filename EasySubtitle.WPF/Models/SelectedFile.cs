@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using EasySubtitle.Business.Models;
 
-namespace EasySubtitle.WPF
+namespace EasySubtitle.WPF.Models
 {
     public class SelectedFile
     {
@@ -33,22 +34,13 @@ namespace EasySubtitle.WPF
         public string File { get; set; }
         public string FileName { get; set; }
         public bool Checked { get; set; }
-        public IList<FoundSubtitle> Subtitles { get; set; }
+        public IEnumerable<FoundSubtitle> Subtitles { get; set; }
 
-        public void CheckSubtitles()
+        public string DirectoryPath
         {
-            var random = new Random();
-            Subtitles.Add(new FoundSubtitle
-            {
-                Checked = true,
-                SubtitleName = String.Format("subtitle {0}.srt", random.Next(0, 20))
-            });
-
-            Subtitles.Add(new FoundSubtitle
-            {
-                Checked = false,
-                SubtitleName = String.Format("subtitle {0}.srt", random.Next(0, 20))
-            });
+            get { return Path.GetDirectoryName(File); }
         }
+
+        public bool Searched { get; set; }
     }
 }

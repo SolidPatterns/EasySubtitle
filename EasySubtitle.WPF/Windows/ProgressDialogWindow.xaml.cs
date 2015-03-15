@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Windows;
+using EasySubtitle.WPF.ViewModels;
 
-namespace EasySubtitle.WPF
+namespace EasySubtitle.WPF.Windows
 {
     /// <summary>
     /// Interaction logic for ProgressDialogWindow.xaml

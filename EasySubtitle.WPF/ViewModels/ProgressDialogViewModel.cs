@@ -1,13 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using EasySubtitle.WPF.Commands;
 
-namespace EasySubtitle.WPF
+namespace EasySubtitle.WPF.ViewModels
 {
     public class ProgressDialogViewModel : ViewModelBase
     {
@@ -38,7 +36,7 @@ namespace EasySubtitle.WPF
         /// <summary>
         /// A cancellation token source for the background operations.
         /// </summary>
-        internal CancellationTokenSource TokenSource { get; set; }
+        public CancellationTokenSource TokenSource { get; set; }
 
         /// <summary>
         /// Whether the operation in progress has been cancelled.
@@ -126,7 +124,7 @@ namespace EasySubtitle.WPF
         {
             p_Progress = 0;
             p_ProgressMax = 0;
-            p_ProgressMessage = "Preparing to perform simulated work.";
+            p_ProgressMessage = "Preparing to perform work.";
             this.IsCancelled = false;
         }
 
@@ -165,155 +163,13 @@ namespace EasySubtitle.WPF
         /// <param name="mainWindowViewModel">The view model for this application's main window.</param>
         private void Initialize()
         {
-            m_ProgressMessageTemplate = "Simulated work {0}% complete";
-            m_CancellationMessage = "Simulated work cancelled";
+            m_ProgressMessageTemplate = "{0}% complete";
+            m_CancellationMessage = "Cancelled";
             this.ClearViewModel();
             TokenSource = new CancellationTokenSource();
             this.Cancel = new CancelCommand(this);
-
-            var workList = Enumerable.Range(0, 999).ToArray();
-            Progress = 0;
-            ProgressMax = workList.Length;
-
-            var task = Task.Factory.StartNew(() =>
-            {
-                foreach (var i in workList)
-                {
-                    if (TokenSource.IsCancellationRequested)
-                    {
-                        ShowCancellationMessage();
-                        break;
-                    }
-
-                    Thread.Sleep(300);
-                    IncrementProgressCounter(10);
-                }
-            }, TokenSource.Token);
         }
 
         #endregion
-    }
-
-    public class SearchAdvancedSubtitleViewModel : ViewModelBase
-    {
-        private SelectedFile _selectedFile;
-
-        public SearchAdvancedSubtitleViewModel(IEnumerable<string> selectedFilePaths)
-        {
-            if (selectedFilePaths == null || !selectedFilePaths.Any()) throw new ArgumentNullException("selectedFilePaths");
-
-            SelectedFiles = new List<SelectedFile>();
-
-            selectedFilePaths.ToList().ForEach(x => SelectedFiles.Add(new SelectedFile(x)));
-            SelectedFile = SelectedFiles.FirstOrDefault();
-
-            Download = new DelegateCommand(() =>
-            {
-                DownlaodSubtitles();
-                var model = new ProgressDialogViewModel();
-                var progress = new ProgressDialogWindow {DataContext = model};
-                progress.Show();
-            });
-        }
-
-        private void DownlaodSubtitles()
-        {
-            SelectedFiles.ToList().Where(x => !x.Subtitles.Any()).ToList().ForEach(x => x.CheckSubtitles());
-
-            //download.. call download service etc.
-        }
-
-        public IList<SelectedFile> SelectedFiles { get; set; }
-
-        public SelectedFile SelectedFile
-        {
-            get { return _selectedFile; }
-            set
-            {
-                base.RaisePropertyChangingEvent("SelectedFile");
-                _selectedFile = value;
-                _selectedFile.CheckSubtitles();
-                base.RaisePropertyChangedEvent("SelectedFile");
-            }
-        }
-
-        public ICommand Download { get; set; }
-    }
-
-    public class DelegateCommand : ICommand
-    {
-        private readonly Action _action;
-
-        public DelegateCommand(Action action)
-        {
-            _action = action;
-        }
-
-        public bool CanExecute(object parameter)
-        {
-            return true;
-        }
-
-        public void Execute(object parameter)
-        {
-            if (_action != null)
-                _action.Invoke();
-        }
-
-        public event EventHandler CanExecuteChanged;
-    }
-
-    public class SelectedFile
-    {
-        public SelectedFile()
-        {
-
-        }
-
-        public SelectedFile(string filePath)
-        {
-            if (string.IsNullOrWhiteSpace(filePath))
-                throw new ArgumentNullException("filePath");
-
-            File = filePath;
-            Checked = true;
-            Subtitles = new List<FoundSubtitle>();
-
-            try
-            {
-                FileName = Path.GetFileName(filePath);
-            }
-            catch (Exception)
-            {
-                throw new InvalidOperationException("File path is not correct.");
-            }
-        }
-
-        public string File { get; set; }
-        public string FileName { get; set; }
-        public bool Checked { get; set; }
-        public IList<FoundSubtitle> Subtitles { get; set; }
-
-        public void CheckSubtitles()
-        {
-            var random = new Random();
-            Subtitles.Add(new FoundSubtitle
-            {
-                Checked = true,
-                SubtitleName = String.Format("subtitle {0}.srt", random.Next(0, 20))
-            });
-
-            Subtitles.Add(new FoundSubtitle
-            {
-                Checked = false,
-                SubtitleName = String.Format("subtitle {0}.srt", random.Next(0, 20))
-            });
-        }
-    }
-
-    public class FoundSubtitle
-    {
-        public string SubtitleName { get; set; }
-        public bool Checked { get; set; }
     }
 }
