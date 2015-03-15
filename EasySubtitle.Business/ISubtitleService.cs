@@ -34,6 +34,8 @@ namespace EasySubtitle.Business
         Task DownloadSubtitleAsync(Subtitle subtitle, string downlaodPath);
         
         void DownloadSubtitle(IAnonymousClient client, Subtitle subtitle, string downlaodPath);
+        
+        void DownloadSubtitle(Subtitle subtitle, string downlaodPath);
 
         void DownloadSubtitles(IEnumerable<Subtitle> subtitles, string downlaodPath);
 

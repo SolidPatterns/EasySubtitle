@@ -1,4 +1,6 @@
-﻿namespace EasySubtitle.Business
+﻿using System.Configuration;
+
+namespace EasySubtitle.Business
 {
     public class SubtitleClientCredentials
     {
@@ -8,8 +10,16 @@
         {
             return new SubtitleClientCredentials
             {
-                UserAgent = "OSTestUserAgent"
+                UserAgent = GetUserAgent()
             };
+        }
+
+        private static string GetUserAgent()
+        {
+            var userAgent = ConfigurationManager.AppSettings.Get("SubtitleClientUserAgent");
+            if (string.IsNullOrWhiteSpace(userAgent))
+                userAgent = "OSTestUserAgent";
+            return userAgent;
         }
     }
 }

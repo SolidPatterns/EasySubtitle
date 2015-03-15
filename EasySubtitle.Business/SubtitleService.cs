@@ -70,8 +70,9 @@ namespace EasySubtitle.Business
             foreach (var language in languages)
             {
                 var foundSubtitles = FindSubtitles(client, filePath, language);
-                if (foundSubtitles != null && foundSubtitles.Any())
-                    subtitles.AddRange(foundSubtitles);
+                var foundSubs = foundSubtitles as Subtitle[] ?? foundSubtitles.ToArray();
+                if (foundSubtitles != null && foundSubs.Any())
+                    subtitles.AddRange(foundSubs);
             }
 
             return subtitles;
@@ -108,7 +109,15 @@ namespace EasySubtitle.Business
 
         public void DownloadSubtitle(IAnonymousClient client, Subtitle subtitle, string downlaodPath)
         {
-            DownloadSubtitle(client, subtitle, downlaodPath);
+            DownloadSubtitle(client, subtitle, downlaodPath, null);
+        }
+
+        public void DownloadSubtitle(Subtitle subtitle, string downlaodPath)
+        {
+            using (var client = SubtitleClientFactory.GetSubtitleClient(_credentials))
+            {
+                DownloadSubtitle(client, subtitle, downlaodPath);
+            }
         }
 
         public void DownloadSubtitles(IEnumerable<Subtitle> subtitles, string downlaodPath)
@@ -125,13 +134,14 @@ namespace EasySubtitle.Business
             if (subtitles == null) throw new ArgumentNullException("subtitles");
             if (String.IsNullOrWhiteSpace(downlaodPath)) throw new ArgumentNullException("downlaodPath");
 
-            if (!subtitles.Any())
+            var subs = subtitles as Subtitle[] ?? subtitles.ToArray();
+            if (!subs.Any())
                 return;
 
-            subtitles.ToList().ForEach(subtitle => DownloadSubtitle(client, subtitle, downlaodPath));
+            subs.ToList().ForEach(subtitle => DownloadSubtitle(client, subtitle, downlaodPath));
         }
 
-        private void DownloadSubtitle(Subtitle subtitle, string downlaodPath, string filePathForAdjustment = null)
+        private void DownloadSubtitle(Subtitle subtitle, string downlaodPath, string filePathForAdjustment)
         {
             using (var client = SubtitleClientFactory.GetSubtitleClient(_credentials))
             {
@@ -139,7 +149,7 @@ namespace EasySubtitle.Business
             }
         }
 
-        private static void DownloadSubtitle(IAnonymousClient client, Subtitle subtitle, string downlaodPath, string filePathForAdjustment = null)
+        private static void DownloadSubtitle(IAnonymousClient client, Subtitle subtitle, string downlaodPath, string filePathForAdjustment)
         {
             if (client == null) throw new ArgumentNullException("client");
             if (subtitle == null) throw new ArgumentNullException("subtitle");
@@ -172,13 +182,13 @@ namespace EasySubtitle.Business
 
         private static string GetFullSubtitleFileNameToMatchMediaFile(string filePath, string directoryPath)
         {
-            return String.Concat(directoryPath, Path.DirectorySeparatorChar.ToString(),
+            return String.Concat(directoryPath, Path.DirectorySeparatorChar,
                 Path.GetFileNameWithoutExtension(filePath), ".srt");
         }
 
         private static string GetFullSubtitleFileName(string directoryPath, Subtitle subtitle)
         {
-            return String.Concat(directoryPath, Path.DirectorySeparatorChar.ToString(), subtitle.SubtitleFileName);
+            return String.Concat(directoryPath, Path.DirectorySeparatorChar, subtitle.SubtitleFileName);
         }
     }
 }
