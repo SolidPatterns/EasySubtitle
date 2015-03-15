@@ -59,6 +59,7 @@ namespace EasySubtitle.WPF.ViewModels
         private async void DownlaodSubtitles()
         {
             //todo: needs refactoring.
+            //todo: appsettings.config is not at that path when registered as shell ext. fix that.
             IAnonymousClient[] client = { SubtitleClientFactory.GetSubtitleClient() };
             try
             {

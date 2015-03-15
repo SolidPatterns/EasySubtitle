@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using EasySubtitle.Business;
-using EasySubtitle.WPF;
 using EasySubtitle.WPF.ViewModels;
 using EasySubtitle.WPF.Windows;
 using OSDBnet;
