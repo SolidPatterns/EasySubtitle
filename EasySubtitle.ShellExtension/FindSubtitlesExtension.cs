@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using EasySubtitle.Business;
 using EasySubtitle.WPF;
+using EasySubtitle.WPF.ViewModels;
 using EasySubtitle.WPF.Windows;
 using OSDBnet;
 using SharpShell.Attributes;
@@ -76,38 +78,36 @@ namespace EasySubtitle.ShellExtension
             //app.Run(new Progress());
 
             var subtitleService = GetSubtitleService();
-            var task = Task.Factory.StartNew(() =>
+            IAnonymousClient[] client = {SubtitleClientFactory.GetSubtitleClient()};
+
+            try
             {
-                Parallel.ForEach(SelectedItemPaths, (path, state, count) =>
+                var task = Task.Factory.StartNew(() =>
                 {
-                    Debug.WriteLine("Finding subtitles for {0}", args: path);
-                    Debug.WriteLine("Count: {0}", args: count);
-                    using (var client = SubtitleClientFactory.GetSubtitleClient())
+                    IAnonymousClient anonymousClient = client[0];
+                    Parallel.ForEach(SelectedItemPaths, (path, state, count) =>
                     {
-                        var subtitle = subtitleService.FindSubtitles(client, path, _languages).FirstOrDefault();
+                        Debug.WriteLine("Finding subtitles for {0}", args: path);
+                        Debug.WriteLine("Count: {0}", args: count);
+                        var subtitle = subtitleService.FindSubtitles(anonymousClient, path, _languages).FirstOrDefault();
                         if (subtitle == null)
                             return;
-                        subtitleService.DownloadSubtitle(client, subtitle, path);
-                    }
+                        subtitleService.DownloadSubtitleAdjusted(anonymousClient, subtitle, path);
+                    });
                 });
-            });
-            await task;
 
-            //Task.Factory.StartNew(() =>
-            //{
-            //    IList<Task> tasks = SelectedItemPaths.Select(path => Task.Factory.StartNew(() =>
-            //    {
-            //        var subtitleService = GetSubtitleService();
-            //        subtitleService.FindSubtitles(path, _languages);
-            //    })).ToList();
-
-            //    Task.WaitAll(tasks.ToArray());
-
-            //    //  Show the ouput.
-
-            //});
-
-            MessageBox.Show("Finding subtitles completed.");
+                await task;
+                MessageBox.Show("Finding subtitles completed.", "Done", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(String.Format("Error occured. Details: {0}.", e.Message), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                client[0].Dispose();
+                client[0] = null;
+            }
         }
 
         private ISubtitleService GetSubtitleService()
@@ -118,8 +118,11 @@ namespace EasySubtitle.ShellExtension
 
         private void FindSubtitlesAdvanced()
         {
-            var app = new App();
-            app.Run(new AdvancedSubtitlesWindow());
+            var advancedSearchSubtitles = new AdvancedSubtitlesWindow
+            {
+                DataContext = new SearchAdvancedSubtitleViewModel(SelectedItemPaths, EasySubtitleFactory.Instance.GetSubtitleService())
+            };
+            advancedSearchSubtitles.Show();
         }
     }
 }

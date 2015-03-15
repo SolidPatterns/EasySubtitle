@@ -58,7 +58,8 @@ namespace EasySubtitle.WPF.ViewModels
 
         private async void DownlaodSubtitles()
         {
-            IAnonymousClient[] client = {SubtitleClientFactory.GetSubtitleClient()};
+            //todo: needs refactoring.
+            IAnonymousClient[] client = { SubtitleClientFactory.GetSubtitleClient() };
             try
             {
                 var task = Task.Factory.StartNew(() =>
@@ -76,34 +77,46 @@ namespace EasySubtitle.WPF.ViewModels
                             return;
                         }
 
-                        _dataContext.IncrementProgressCounter(1);
-
                         if (!selectedFile.Checked)
                         {
+                            IncrementProgressCounter();
                             return;
                         }
 
-                        if (selectedFile.Subtitles.Any() && selectedFile.Subtitles.Any(sub => sub.Checked))
+                        if (selectedFile.Searched && selectedFile.Subtitles.Any(sub => sub.Checked))
                         {
                             var selectedSubtitles =
                                 selectedFile.Subtitles.Where(sub => sub.Checked).Select(sub => sub.Subtitle);
-                            _subtitleService.DownloadSubtitles(taskClient, selectedSubtitles, selectedFile.DirectoryPath);
+                            if (selectedSubtitles.Count() > 1)
+                            {
+                                _subtitleService.DownloadSubtitles(taskClient, selectedSubtitles, selectedFile.DirectoryPath);
+                                IncrementProgressCounter();
+                                return;
+                            }
+                            
+                            _subtitleService.DownloadSubtitleAdjusted(taskClient, selectedSubtitles.First(), selectedFile.File);
+                            IncrementProgressCounter();
                             return;
                         }
 
                         var subtitle = _subtitleService.FindSubtitles(taskClient, selectedFile.File, "eng").FirstOrDefault();
                         if (subtitle == null)
                         {
+                            IncrementProgressCounter();
+
                             return;
                         }
                         _subtitleService.DownloadSubtitleAdjusted(taskClient, subtitle, selectedFile.File);
+                        IncrementProgressCounter();
+
                     });
                 }, _tokenSource.Token);
                 await task;
+                MessageBox.Show("Finding subtitles completed.", "Done", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK, MessageBoxOptions.DefaultDesktopOnly);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                MessageBox.Show("Error occurred.");
+                MessageBox.Show(String.Format("Error occured. Details: {0}.", e.Message), "Error", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK, MessageBoxOptions.DefaultDesktopOnly);
             }
             finally
             {
@@ -111,6 +124,11 @@ namespace EasySubtitle.WPF.ViewModels
                 client[0] = null;
                 _progress.Hide();
             }
+        }
+
+        private void IncrementProgressCounter()
+        {
+            _dataContext.IncrementProgressCounter(1);
         }
 
         public IList<SelectedFile> SelectedFiles { get; set; }

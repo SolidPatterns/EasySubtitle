@@ -38,8 +38,8 @@ namespace EasySubtitle.Tests
         [Test]
         public void Register()
         {
-            const string registerDllName = "D:/Sources/Workspaces/GitHub/EasySubtitle/EasySubtitle.Core/bin/Debug/EasySubtitle.Core.dll";
-            const string srmFileLocation = "D:/Sources/Workspaces/GitHub/EasySubtitle/EasySubtitle.Core/bin/Debug/srm.exe";
+            const string registerDllName = "D:/Sources/Workspaces/GitHub/EasySubtitle/EasySubtitle.ShellExtension/bin/Debug/EasySubtitle.ShellExtension.dll";
+            const string srmFileLocation = "D:/Sources/Workspaces/GitHub/EasySubtitle/EasySubtitle.ShellExtension/bin/Debug/srm.exe";
             var dir = System.Runtime.InteropServices.RuntimeEnvironment.GetRuntimeDirectory();
             Console.WriteLine(dir);
             Process.Start(new ProcessStartInfo()
