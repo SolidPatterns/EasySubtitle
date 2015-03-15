@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using EasySubtitle.Business.Models;
 
 namespace EasySubtitle.WPF.Models
 {

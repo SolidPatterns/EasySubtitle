@@ -1,82 +1,67 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using OSDBnet;
 
 namespace EasySubtitle.Business
 {
-    //todo: make this service return found subtitle dto's
-    //todo: create a download service that downloads given subtitles
-    //todo: create a subtitle engine that finds subtitles and downloads them if asked to
-    
     public class SubtitleService : ISubtitleService
     {
-        private readonly SubtitleServiceCredentials _credentials;
+        private readonly SubtitleClientCredentials _credentials;
 
-        public SubtitleService(SubtitleServiceCredentials credentials)
+        public SubtitleService(SubtitleClientCredentials credentials = null)
         {
             _credentials = credentials;
         }
 
-        public void FindSubtitles(IEnumerable<string> mediaFiles, params string[] languages)
+        public IDictionary<string, IEnumerable<Subtitle>> FindSubtitles(IEnumerable<string> mediaFiles, params string[] languages)
         {
             var filePaths = mediaFiles as IList<string> ?? mediaFiles.ToList();
 
             if (filePaths == null || !filePaths.Any()) throw new ArgumentNullException("mediaFiles");
 
-            using (var client = Osdb.Login(_credentials.UserAgent))
+            var subtitleDictionary = new Dictionary<string, IEnumerable<Subtitle>>();
+            using (var client = SubtitleClientFactory.GetSubtitleClient(_credentials))
             {
                 foreach (var filePath in filePaths)
                 {
-                    FindSubtitles(client, filePath);
+                    subtitleDictionary.Add(filePath, FindSubtitles(client, filePath, languages));
                 }
             }
+
+            return subtitleDictionary;
         }
 
-        public void FindSubtitles(string filePath, params string[] languages)
+        public IEnumerable<Subtitle> FindSubtitles(string filePath, params string[] languages)
         {
-            using (var client = Osdb.Login(_credentials.UserAgent))
+            using (var client = SubtitleClientFactory.GetSubtitleClient(_credentials))
             {
-                FindSubtitles(client, filePath, languages);
+                return FindSubtitles(client, filePath, languages);
             }
         }
 
-        private void FindSubtitles(IAnonymousClient client, string filePath, params string[] languages)
+        private IEnumerable<Subtitle> FindSubtitles(IAnonymousClient client, string filePath, params string[] languages)
         {
             if (languages == null || !languages.Any()) throw new ArgumentNullException("languages");
 
+            var subtitles = new List<Subtitle>();
             foreach (var language in languages)
             {
-                FindSubtitleByLanguage(client, filePath, language);
+                var foundSubtitles = FindSubtitleByLanguage(client, filePath, language);
+                if (foundSubtitles != null && foundSubtitles.Any())
+                    subtitles.AddRange(foundSubtitles);
             }
+
+            return subtitles;
         }
 
-        private static void FindSubtitleByLanguage(IAnonymousClient client, string filePath, string language)
+        private IEnumerable<Subtitle> FindSubtitleByLanguage(IAnonymousClient client, string filePath, string language)
         {
-            var subtitles = client.SearchSubtitlesFromFile(language, filePath);
-            if (!subtitles.Any())
-                return;
+            if(client == null) throw new ArgumentNullException("client");
+            if(string.IsNullOrWhiteSpace(filePath)) throw new ArgumentNullException("filePath");
+            if (string.IsNullOrWhiteSpace(language)) throw new ArgumentNullException("language");
 
-            var subtitle = subtitles.OrderByDescending(x => x.Rating).FirstOrDefault();
-            if (subtitle == null)
-                return;
-
-            var directoryPath = Path.GetDirectoryName(filePath);
-            client.DownloadSubtitleToPath(directoryPath, subtitle);
-            File.Move(GetFullSubtitleFileName(directoryPath, subtitle),
-                GetFullSubtitleFileNameToMatchMediaFile(filePath, directoryPath));
-        }
-
-        private static string GetFullSubtitleFileNameToMatchMediaFile(string filePath, string directoryPath)
-        {
-            return String.Concat(directoryPath, Path.DirectorySeparatorChar.ToString(),
-                Path.GetFileNameWithoutExtension(filePath), ".srt");
-        }
-
-        private static string GetFullSubtitleFileName(string directoryPath, Subtitle subtitle)
-        {
-            return String.Concat(directoryPath, Path.DirectorySeparatorChar.ToString(), subtitle.SubtitleFileName);
+            return client.SearchSubtitlesFromFile(language, filePath);
         }
     }
 }

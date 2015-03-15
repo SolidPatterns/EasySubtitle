@@ -79,7 +79,6 @@
     </ApplicationDefinition>
     <Compile Include="Commands\CancelCommand.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
-    <Compile Include="Models\FoundSubtitle.cs" />
     <Compile Include="Models\SelectedFile.cs" />
     <Page Include="Windows\AdvancedSubtitlesWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -152,7 +151,12 @@
   <ItemGroup>
     <SplashScreen Include="ProgressScreen.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\EasySubtitle.Business\EasySubtitle.Business.csproj">
+      <Project>{FA816B98-0415-440E-8FB0-614EDD77C998}</Project>
+      <Name>EasySubtitle.Business</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

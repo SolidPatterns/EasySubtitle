@@ -1,10 +1,12 @@
 using OSDBnet;
 
-namespace EasySubtitle.WPF.Models
+namespace EasySubtitle.Business.Models
 {
-    public class FoundSubtitle : Subtitle
+    public class FoundSubtitle
     {
         public string SubtitleName { get; set; }
         public bool Checked { get; set; }
+
+        public Subtitle Subtitle { get; set; }
     }
 }

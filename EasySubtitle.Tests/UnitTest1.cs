@@ -1,9 +1,7 @@
 ﻿using System;
-using System.CodeDom.Compiler;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NUnit.Framework;
 using OSDBnet;
 
@@ -66,7 +64,5 @@ namespace EasySubtitle.Tests
                 catch { }
             }
         }
-
-
     }
 }

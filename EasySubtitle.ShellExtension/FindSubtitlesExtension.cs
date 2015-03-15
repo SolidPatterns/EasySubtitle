@@ -97,8 +97,8 @@ namespace EasySubtitle.ShellExtension
         private ISubtitleService GetSubtitleService()
         {
             var subtitleService =
-                SubtitleServiceFactory.GetSubtitleService(
-                    new SubtitleServiceCredentials { UserAgent = "OSTestUserAgent" });
+                EasySubtitleFactory.GetSubtitleService(
+                    new SubtitleClientCredentials { UserAgent = "OSTestUserAgent" });
             return subtitleService;
         }
 
