@@ -9,7 +9,7 @@ namespace EasySubtitle.WPF.Commands
         #region Fields
 
         // Member variables
-        private ProgressDialogViewModel m_ViewModel;
+        private readonly ProgressDialogViewModel _viewModel;
 
         #endregion
 
@@ -20,7 +20,7 @@ namespace EasySubtitle.WPF.Commands
         /// </summary>
         public CancelCommand(ProgressDialogViewModel viewModel)
         {
-            m_ViewModel = viewModel;
+            _viewModel = viewModel;
         }
 
         #endregion
@@ -56,7 +56,7 @@ namespace EasySubtitle.WPF.Commands
              * button-click, and once for the window-close. */
 
             // Exit if dialog has already been cancelled
-            if (m_ViewModel.IsCancelled) return;
+            if (_viewModel.IsCancelled) return;
 
             /* The DoDemoWorkCommand.Execute() method defines a cancellation token source and
              * passes it to the Progress Dialog view model. The token itself is passed to the 
@@ -64,13 +64,13 @@ namespace EasySubtitle.WPF.Commands
              * cancel the loop by calling the TokenSource.Cancel() method. */
 
             // Validate TokenSource object
-            if (m_ViewModel.TokenSource == null)
+            if (_viewModel.TokenSource == null)
             {
                 throw new ApplicationException("ProgressDialogViewModel.TokenSource property is null");
             }
 
             // Cancel all pending background tasks
-            m_ViewModel.TokenSource.Cancel();
+            _viewModel.TokenSource.Cancel();
         }
 
         #endregion

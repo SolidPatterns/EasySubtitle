@@ -36,7 +36,7 @@ namespace EasySubtitle.WPF.ViewModels
         /// <summary>
         /// A cancellation token source for the background operations.
         /// </summary>
-        internal CancellationTokenSource TokenSource { get; set; }
+        public CancellationTokenSource TokenSource { get; set; }
 
         /// <summary>
         /// Whether the operation in progress has been cancelled.
@@ -124,7 +124,7 @@ namespace EasySubtitle.WPF.ViewModels
         {
             p_Progress = 0;
             p_ProgressMax = 0;
-            p_ProgressMessage = "Preparing to perform simulated work.";
+            p_ProgressMessage = "Preparing to perform work.";
             this.IsCancelled = false;
         }
 
@@ -163,30 +163,11 @@ namespace EasySubtitle.WPF.ViewModels
         /// <param name="mainWindowViewModel">The view model for this application's main window.</param>
         private void Initialize()
         {
-            m_ProgressMessageTemplate = "Simulated work {0}% complete";
-            m_CancellationMessage = "Simulated work cancelled";
+            m_ProgressMessageTemplate = "{0}% complete";
+            m_CancellationMessage = "Cancelled";
             this.ClearViewModel();
             TokenSource = new CancellationTokenSource();
             this.Cancel = new CancelCommand(this);
-
-            var workList = Enumerable.Range(0, 999).ToArray();
-            Progress = 0;
-            ProgressMax = workList.Length;
-
-            var task = Task.Factory.StartNew(() =>
-            {
-                foreach (var i in workList)
-                {
-                    if (TokenSource.IsCancellationRequested)
-                    {
-                        ShowCancellationMessage();
-                        break;
-                    }
-
-                    Thread.Sleep(300);
-                    IncrementProgressCounter(10);
-                }
-            }, TokenSource.Token);
         }
 
         #endregion

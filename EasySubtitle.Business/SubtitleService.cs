@@ -166,8 +166,12 @@ namespace EasySubtitle.Business
         private static void RenameSubtitle(Subtitle subtitle, string downlaodPath, string filePathForAdjustment)
         {
             var subtitleFileNameToCreate = GetFullSubtitleFileNameToMatchMediaFile(filePathForAdjustment, downlaodPath);
-            File.Delete(subtitleFileNameToCreate);
-            File.Move(GetFullSubtitleFileName(downlaodPath, subtitle), subtitleFileNameToCreate);
+            if (!subtitle.SubtitleFileName.Equals(subtitleFileNameToCreate))
+                File.Delete(subtitleFileNameToCreate);
+            
+            var fullSubtitleFileName = GetFullSubtitleFileName(downlaodPath, subtitle);
+            if (File.Exists(fullSubtitleFileName))
+                File.Move(fullSubtitleFileName, subtitleFileNameToCreate);
         }
 
         private static string GetDirectoryPath(string subtitleMediaFilePath)

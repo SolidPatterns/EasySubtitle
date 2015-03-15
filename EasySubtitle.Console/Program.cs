@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using EasySubtitle.Business;
 using EasySubtitle.WPF;
 using EasySubtitle.WPF.ViewModels;
 using EasySubtitle.WPF.Windows;
@@ -17,7 +18,7 @@ namespace EasySubtitle.Console
 
             var advancedSearchSubtitles = new AdvancedSubtitlesWindow
             {
-                DataContext = new SearchAdvancedSubtitleViewModel(Directory.GetFiles("F:/Videos/Series/Arrow/S3", "*.mkv"))
+                DataContext = new SearchAdvancedSubtitleViewModel(Directory.GetFiles("F:/Videos/Series/Arrow/S3", "*.mkv"), EasySubtitleFactory.Instance.GetSubtitleService())
             };
             app.Run(advancedSearchSubtitles);
 

@@ -11,7 +11,7 @@
             </DataGrid.Columns>
         </DataGrid>
         <DataGrid HorizontalAlignment="Left" VerticalAlignment="Top" Height="420" Width="435" 
-                  ItemsSource="{Binding SelectedFile.Subtitles}" AutoGenerateColumns="False" Margin="457,0,0,0" SelectionMode="Single">
+                  ItemsSource="{Binding SelectedFile.Subtitles}" AutoGenerateColumns="False" Margin="457,0,0,0" SelectionMode="Extended">
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Binding="{Binding Checked}"></DataGridCheckBoxColumn>
                 <DataGridTextColumn Binding="{Binding SubtitleName}"></DataGridTextColumn>
