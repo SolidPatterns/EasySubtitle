@@ -21,12 +21,5 @@ namespace EasySubtitle.Business
                 credentials = SubtitleClientCredentials.Default();
             return new SubtitleService(credentials);
         }
-
-        public IDownloadSubtitleService GetDownloadSubtitleService(SubtitleClientCredentials credentials = null)
-        {
-            if (credentials == null)
-                credentials = SubtitleClientCredentials.Default();
-            return new DownloadSubtitleService(credentials);
-        }
     }
 }

@@ -55,7 +55,6 @@
     <Compile Include="SubtitleClientCredentials.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SubtitleClientFactory.cs" />
-    <Compile Include="DownloadSubtitleService.cs" />
     <Compile Include="SubtitleService.cs" />
     <Compile Include="EasySubtitleFactory.cs" />
   </ItemGroup>
