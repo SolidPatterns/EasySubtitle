@@ -16,16 +16,16 @@ namespace EasySubtitle.Console
 
             //RunProgressDialog(app);
 
-            //var advancedSearchSubtitles = new AdvancedSubtitlesWindow
-            //{
-            //    DataContext = new SearchAdvancedSubtitleViewModel(Directory.GetFiles("F:/Videos/Series/Arrow/S3", "*.mkv"), EasySubtitleFactory.Instance.GetSubtitleService())
-            //};
-            //app.Run(advancedSearchSubtitles);
+            var advancedSearchSubtitles = new AdvancedSubtitlesWindow
+            {
+                DataContext = new SearchAdvancedSubtitleViewModel(Directory.GetFiles("F:/Videos/Series/Arrow/S3", "*.mkv"), EasySubtitleFactory.Instance.GetSubtitleService())
+            };
+            app.Run(advancedSearchSubtitles);
 
-            var settingsViewModel = new SettingsViewModel();
-            var settingsWindow = new SettingsWindow();
-            settingsWindow.DataContext = settingsViewModel;
-            app.Run(settingsWindow);
+            //var settingsViewModel = new SettingsViewModel();
+            //var settingsWindow = new SettingsWindow();
+            //settingsWindow.DataContext = settingsViewModel;
+            //app.Run(settingsWindow);
 
             System.Console.ReadLine();
         }
