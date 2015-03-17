@@ -46,7 +46,7 @@ namespace EasySubtitle.Tests
                 {
                     Debug.WriteLine("Finding subtitles for {0}", args: path);
                     Debug.WriteLine("Count: {0}", args: count);
-                    using (var client = SubtitleClientFactory.GetSubtitleClient())
+                    using (var client = EasySubtitleClientFactory.GetSubtitleClient())
                     {
                         subtitles.AddRange(_subtitleService.FindSubtitles(client, path, "eng"));
                     }

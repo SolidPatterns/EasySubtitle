@@ -76,7 +76,7 @@ namespace EasySubtitle.ShellExtension
             //app.Run(new Progress());
 
             var subtitleService = GetSubtitleService();
-            IAnonymousClient[] client = {SubtitleClientFactory.GetSubtitleClient()};
+            IAnonymousClient[] client = {EasySubtitleClientFactory.GetSubtitleClient()};
 
             try
             {

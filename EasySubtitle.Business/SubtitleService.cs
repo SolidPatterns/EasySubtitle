@@ -23,7 +23,7 @@ namespace EasySubtitle.Business
             if (filePaths == null || !filePaths.Any()) throw new ArgumentNullException("mediaFiles");
 
             var subtitleDictionary = new Dictionary<string, IEnumerable<Subtitle>>();
-            using (var client = SubtitleClientFactory.GetSubtitleClient(_credentials))
+            using (var client = EasySubtitleClientFactory.GetSubtitleClient(_credentials))
             {
                 foreach (var filePath in filePaths)
                 {
@@ -36,7 +36,7 @@ namespace EasySubtitle.Business
 
         public IEnumerable<Subtitle> FindSubtitles(string filePath, string[] languages)
         {
-            using (var client = SubtitleClientFactory.GetSubtitleClient(_credentials))
+            using (var client = EasySubtitleClientFactory.GetSubtitleClient(_credentials))
             {
                 return FindSubtitles(client, filePath, languages);
             }
@@ -56,7 +56,7 @@ namespace EasySubtitle.Business
             if (string.IsNullOrWhiteSpace(filePath)) throw new ArgumentNullException("filePath");
             if (string.IsNullOrWhiteSpace(language)) throw new ArgumentNullException("language");
 
-            using (var client = SubtitleClientFactory.GetSubtitleClient(_credentials))
+            using (var client = EasySubtitleClientFactory.GetSubtitleClient(_credentials))
             {
                 return FindSubtitles(client, filePath, language);
             }
@@ -78,9 +78,9 @@ namespace EasySubtitle.Business
             return subtitles;
         }
 
-        public async Task<IEnumerable<Subtitle>> FindSubtitlesAsync(string filePath, string language)
+        public async Task<IEnumerable<Subtitle>> FindSubtitlesAsync(string filePath, params string[] languages)
         {
-            return await Task.Factory.StartNew(() => FindSubtitles(filePath, language));
+            return await Task.Factory.StartNew(() => FindSubtitles(filePath, languages));
         }
 
         public void DownloadSubtitleAdjusted(Subtitle subtitle, string subtitleMediaFilePath)
@@ -114,7 +114,7 @@ namespace EasySubtitle.Business
 
         public void DownloadSubtitle(Subtitle subtitle, string downlaodPath)
         {
-            using (var client = SubtitleClientFactory.GetSubtitleClient(_credentials))
+            using (var client = EasySubtitleClientFactory.GetSubtitleClient(_credentials))
             {
                 DownloadSubtitle(client, subtitle, downlaodPath);
             }
@@ -122,7 +122,7 @@ namespace EasySubtitle.Business
 
         public void DownloadSubtitles(IEnumerable<Subtitle> subtitles, string downlaodPath)
         {
-            using (var client = SubtitleClientFactory.GetSubtitleClient(_credentials))
+            using (var client = EasySubtitleClientFactory.GetSubtitleClient(_credentials))
             {
                 DownloadSubtitles(client, subtitles, downlaodPath);
             }
@@ -143,7 +143,7 @@ namespace EasySubtitle.Business
 
         private void DownloadSubtitle(Subtitle subtitle, string downlaodPath, string filePathForAdjustment)
         {
-            using (var client = SubtitleClientFactory.GetSubtitleClient(_credentials))
+            using (var client = EasySubtitleClientFactory.GetSubtitleClient(_credentials))
             {
                 DownloadSubtitle(client, subtitle, downlaodPath, filePathForAdjustment);
             }

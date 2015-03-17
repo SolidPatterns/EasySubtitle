@@ -2,7 +2,7 @@ using OSDBnet;
 
 namespace EasySubtitle.Business
 {
-    public class SubtitleClientFactory
+    public class EasySubtitleClientFactory
     {
         public static IAnonymousClient GetSubtitleClient(SubtitleClientCredentials credentials = null)
         {
