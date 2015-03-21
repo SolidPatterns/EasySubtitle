@@ -9,9 +9,9 @@ namespace EasySubtitle.Business
 {
     public class SubtitleService : ISubtitleService
     {
-        private readonly SubtitleClientCredentials _credentials;
+        private readonly ISubtitleClientCredentials _credentials;
 
-        public SubtitleService(SubtitleClientCredentials credentials = null)
+        public SubtitleService(ISubtitleClientCredentials credentials = null)
         {
             _credentials = credentials;
         }

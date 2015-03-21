@@ -13,7 +13,7 @@ namespace EasySubtitle.Console
         static void Main(string[] args)
         {
             var app = new App();
-
+            
             //RunProgressDialog(app);
 
             var advancedSearchSubtitles = new AdvancedSubtitlesWindow

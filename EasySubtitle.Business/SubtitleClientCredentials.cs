@@ -1,12 +1,22 @@
-﻿using System.Configuration;
-
-namespace EasySubtitle.Business
+﻿namespace EasySubtitle.Business
 {
-    public class SubtitleClientCredentials
+    public class SubtitleClientCredentials : ISubtitleClientCredentials
     {
+        private static IEasySubtitleConfig _easySubtitleConfig;
+
+        public SubtitleClientCredentials(IEasySubtitleConfig easySubtitleConfig)
+        {
+            _easySubtitleConfig = easySubtitleConfig;
+        }
+
+        public SubtitleClientCredentials()
+        {
+            _easySubtitleConfig = EasySubtitleConfig.GetEasySubtitleConfig();
+        }
+
         public string UserAgent { get; set; }
 
-        public static SubtitleClientCredentials Default()
+        public static ISubtitleClientCredentials Default()
         {
             return new SubtitleClientCredentials
             {
@@ -16,7 +26,7 @@ namespace EasySubtitle.Business
 
         private static string GetUserAgent()
         {
-            var userAgent = ConfigurationManager.AppSettings.Get("SubtitleClientUserAgent");
+            var userAgent = _easySubtitleConfig.UserAgent;
             if (string.IsNullOrWhiteSpace(userAgent))
                 userAgent = "OSTestUserAgent";
             return userAgent;
