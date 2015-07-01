@@ -3,24 +3,56 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Security.Policy;
-using System.Xml;
 
 namespace EasySubtitle.Business
 {
     public class EasySubtitleConfig : IEasySubtitleConfig
     {
         private string _userAgent;
-        private string _defaultSubtitleLanguage;
-        private IList<string> _selectedSubtitleLanguages;
-        public const string SubtitleClientUserAgentKey = "SubtitleClientUserAgent";
-        public const string DefaultSubtitleLanguageKey = "DefaultSubtitleLanguage";
-        public const string SelectedSubtitleLanguagesKey = "SelectedSubtitleLanguages";
-    
+        private const string ConfigFilePath = "config.cfg";
+        private const string SubtitleClientUserAgentKey = "SubtitleClientUserAgent";
+        private const string DefaultSubtitleLanguageKey = "DefaultSubtitleLanguage";
+        private const string SelectedSubtitleLanguagesKey = "SelectedSubtitleLanguages";
+        private readonly IDictionary<String, String> _configDictionary = new Dictionary<string, string>();
+
         public EasySubtitleConfig()
         {
-            _selectedSubtitleLanguages = new List<string>();
+            InitializeConfig();
+        }
+
+        private void InitializeConfig()
+        {
+            if (!File.Exists(ConfigFilePath))
+            {
+                IList<string> configList = new List<string>() { "DefaultSubtitleLanguage = eng" };
+                File.WriteAllLines(ConfigFilePath, configList);
+                return;
+            }
+
+            using (var streamReader = new StreamReader(ConfigFilePath))
+            {
+                while (!streamReader.EndOfStream)
+                {
+                    var configLine = streamReader.ReadLine();
+                    if (configLine == null) continue;
+
+                    var configSplit = configLine.Split('=');
+                    if (configSplit.Length < 1)
+                    {
+                        throw new InvalidOperationException("Config is corrupted.");
+                    }
+
+                    var configKey = configSplit[0].Trim();
+                    var configValue = configSplit[1];
+
+                    if (string.IsNullOrEmpty(configKey) || string.IsNullOrEmpty(configValue))
+                    {
+                        continue;
+                    }
+
+                    _configDictionary.Add(configKey, configValue);
+                }   
+            }
         }
 
 
@@ -30,7 +62,7 @@ namespace EasySubtitle.Business
             {
                 if (!string.IsNullOrWhiteSpace(_userAgent)) return _userAgent;
 
-                var userAgent = GetConfigurationValue(SubtitleClientUserAgentKey);
+                var userAgent = GetApplicationConfigurationValue(SubtitleClientUserAgentKey);
 
                 if (string.IsNullOrWhiteSpace(userAgent))
                     return _userAgent = "OSTestUserAgent";
@@ -51,52 +83,63 @@ namespace EasySubtitle.Business
         {
             get
             {
-                if (!string.IsNullOrWhiteSpace(_defaultSubtitleLanguage)) return _defaultSubtitleLanguage;
-
                 var defaultSubtitleLanguage = GetConfigurationValue(DefaultSubtitleLanguageKey);
                 if (string.IsNullOrWhiteSpace(defaultSubtitleLanguage))
-                    return _defaultSubtitleLanguage = "eng";
+                    return "eng";
 
-                return _defaultSubtitleLanguage = defaultSubtitleLanguage;
+                return defaultSubtitleLanguage;
             }
             set
             {
                 if (value.Equals(UserAgent)) return;
                 if (string.IsNullOrWhiteSpace(value)) return;
 
-                _defaultSubtitleLanguage = value;
-                SetConfigurationValue(DefaultSubtitleLanguageKey, _defaultSubtitleLanguage);
+                SetConfigurationValue(DefaultSubtitleLanguageKey, value);
             }
+        }
+
+        public void SetDefaultSubtitileLanguage(String language)
+        {
+            SetConfigurationValue(DefaultSubtitleLanguageKey, language);
+        }
+
+        public void SetSelectedSubtitleLanguages(IList<string> languages)
+        {
+            if (languages == null || languages.Count == 0)
+            {
+                throw new ArgumentException("languages");
+            }
+            
+            var languagesCommaSeparated = String.Join(",", languages);
+            SetConfigurationValue(SelectedSubtitleLanguagesKey, languagesCommaSeparated);
         }
 
         public IList<string> SelectedSubtitleLanguages
         {
             get
             {
-                if (_selectedSubtitleLanguages.Any()) return _selectedSubtitleLanguages;
-
                 var selectedSubtitleLanguages = GetConfigurationValue(SelectedSubtitleLanguagesKey);
                 if (string.IsNullOrWhiteSpace(selectedSubtitleLanguages))
-                    return _selectedSubtitleLanguages = new[] { "eng" };
+                    return new[] { "eng" };
 
+                String[] subtitleLanguages;
                 try
                 {
-                    _selectedSubtitleLanguages = selectedSubtitleLanguages.Split(',');
+                    subtitleLanguages = selectedSubtitleLanguages.Split(',');
                 }
                 catch
                 {
-                    _selectedSubtitleLanguages = new[] {"eng"};
+                    subtitleLanguages = new[] { "eng" };
                 }
 
-                return _selectedSubtitleLanguages;
+                return subtitleLanguages;
             }
             set
             {
                 if (value == null || value.Any()) return;
                 if (value.Equals(SelectedSubtitleLanguages)) return;
 
-                _selectedSubtitleLanguages = value;
-                SetConfigurationValue(SelectedSubtitleLanguagesKey, string.Join(",", _selectedSubtitleLanguages));
+                SetConfigurationValue(SelectedSubtitleLanguagesKey, string.Join(",", value));
             }
         }
 
@@ -105,35 +148,31 @@ namespace EasySubtitle.Business
             return new EasySubtitleConfig();
         }
 
-        private static string GetConfigurationValue(string key)
+        private static string GetApplicationConfigurationValue(string key)
         {
             return ConfigurationManager.AppSettings.Get(key);
         }
 
-        private static void SetConfigurationValue(string key, string value)
+        private void SetConfigurationValue(string key, string value)
         {
-            //XmlDocument doc = new XmlDocument();
-            
-            //doc.Load(Directory.GetParent(Environment.CurrentDirectory).Parent.GetFiles("AppSettings.config").First().FullName);
-            //doc.DocumentElement.GetElementsByTagName("appSettings")
-            //var elements = doc.GetElementsByTagName("appSettings");
+            if (string.IsNullOrEmpty(key)) throw new ArgumentException("key");
+            if (string.IsNullOrEmpty(value)) throw new ArgumentException("value");
 
-            //foreach (var element in doc.DocumentElement)
-            //{
-            //    element
-            //}
-            
-            const string sectionName = "appSettings";
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            var section = config.GetSection(sectionName);//OpenExeConfiguration(ConfigurationUserLevel.None);
-            var appSettings = (AppSettingsSection) section;
+            var trimmedKey = key.Trim();
+            if (_configDictionary.ContainsKey(trimmedKey))
+            {
+                _configDictionary.Remove(trimmedKey);
+            }
 
-            appSettings.Settings[key].Value = value;
-            appSettings.SectionInformation.UnprotectSection();
-            appSettings.SectionInformation.ForceSave = true;
-            config.Save(ConfigurationSaveMode.Modified);
+            _configDictionary.Add(trimmedKey, value);
+            File.WriteAllLines(ConfigFilePath, _configDictionary.Select(x => String.Format("{0}={1}", x.Key, x.Value)));
+        }
 
-            ConfigurationManager.RefreshSection(sectionName);
+        private String GetConfigurationValue(string key)
+        {
+            string value;
+            _configDictionary.TryGetValue(key, out value);
+            return value;
         }
     }
 }

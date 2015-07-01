@@ -1,4 +1,4 @@
-﻿using System.Configuration;
+﻿using System.Collections.Generic;
 using EasySubtitle.Business;
 using NUnit.Framework;
 
@@ -16,11 +16,20 @@ namespace EasySubtitle.Tests
         }
 
         [Test]
-        public void Change_User_Agent_When_Set_Value()
+        public void Change_Default_Subtitile_Language_When_Set_Value()
         {
-            const string userAgent = "kemal";
-            Config.UserAgent = userAgent;
-            Assert.AreEqual(userAgent, ConfigurationManager.AppSettings.Get(EasySubtitleConfig.SubtitleClientUserAgentKey));
+            const string newDefaultSubtitileLanguage = "tur";
+            Config.SetDefaultSubtitileLanguage(newDefaultSubtitileLanguage);
+            Assert.AreEqual(newDefaultSubtitileLanguage, Config.DefaultSubtitleLanguage);
+        }
+
+        [Test]
+        public void Change_Selected_Subtitile_Languages_When_Set_Value()
+        {
+            const string expectedNewSelectedSubtitileLanguage = "tur,eng";
+            var subtitleList = new List<string>() {"tur", "eng"};
+            Config.SetSelectedSubtitleLanguages(subtitleList);
+            Assert.AreEqual(expectedNewSelectedSubtitileLanguage, string.Join(",",Config.SelectedSubtitleLanguages));
         }
     }
 }
