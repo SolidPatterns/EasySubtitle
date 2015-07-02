@@ -12,7 +12,7 @@ namespace EasySubtitle.Business
 
         IDictionary<string, IEnumerable<Subtitle>> FindSubtitles(IEnumerable<string> mediaFiles, params string[] languages);
 
-        Task<IEnumerable<Subtitle>> FindSubtitlesAsync(string filePath, string language);
+        Task<IEnumerable<Subtitle>> FindSubtitlesAsync(string filePath, params string[] languages);
 
         /// <summary>
         /// Downloads the given subtitle and renames it according to the media file name.

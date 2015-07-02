@@ -13,7 +13,7 @@ namespace EasySubtitle.Console
         static void Main(string[] args)
         {
             var app = new App();
-
+            
             //RunProgressDialog(app);
 
             var advancedSearchSubtitles = new AdvancedSubtitlesWindow
@@ -21,6 +21,11 @@ namespace EasySubtitle.Console
                 DataContext = new SearchAdvancedSubtitleViewModel(Directory.GetFiles("F:/Videos/Series/Arrow/S3", "*.mkv"), EasySubtitleFactory.Instance.GetSubtitleService())
             };
             app.Run(advancedSearchSubtitles);
+
+            //var settingsViewModel = new SettingsViewModel();
+            //var settingsWindow = new SettingsWindow();
+            //settingsWindow.DataContext = settingsViewModel;
+            //app.Run(settingsWindow);
 
             System.Console.ReadLine();
         }

@@ -15,7 +15,7 @@ namespace EasySubtitle.Business
             get { return _instance.Value; }
         }
 
-        public ISubtitleService GetSubtitleService(SubtitleClientCredentials credentials = null)
+        public ISubtitleService GetSubtitleService(ISubtitleClientCredentials credentials = null)
         {
             if (credentials == null)
                 credentials = SubtitleClientCredentials.Default();
