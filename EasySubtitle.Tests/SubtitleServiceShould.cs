@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using EasySubtitle.Business;
+using EasySubtitle.Business.Models;
 using NUnit.Framework;
 using OSDBnet;
 
@@ -30,7 +31,7 @@ namespace EasySubtitle.Tests
         [Test]
         public void Return_Subtitles_For_Multiple_Files_And_Languages()
         {
-            var subtitles = _subtitleService.FindSubtitles(mediaPaths, "tr", "en");
+            var subtitles = _subtitleService.FindSubtitles(mediaPaths, SubtitleLanguages.Turkish, SubtitleLanguages.English);
             Assert.That(subtitles, Is.Not.Null);
             Assert.That(subtitles.Any(), Is.True);
         }
@@ -48,7 +49,7 @@ namespace EasySubtitle.Tests
                     Debug.WriteLine("Count: {0}", args: count);
                     using (var client = EasySubtitleClientFactory.GetSubtitleClient())
                     {
-                        subtitles.AddRange(_subtitleService.FindSubtitles(client, path, "en"));
+                        subtitles.AddRange(_subtitleService.FindSubtitles(client, path, SubtitleLanguages.English));
                     }
                 });
             });
@@ -61,7 +62,7 @@ namespace EasySubtitle.Tests
         [Test]
         public void Return_Subtitles_For_One_File_And_One_Language()
         {
-            var subtitles = _subtitleService.FindSubtitles(mediaPaths.First(), "tr");
+            var subtitles = _subtitleService.FindSubtitles(mediaPaths.First(), SubtitleLanguages.Turkish);
             Assert.That(subtitles, Is.Not.Null);
             Assert.That(subtitles.Any(), Is.True);
         }
@@ -70,7 +71,7 @@ namespace EasySubtitle.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Throw_Arg_Null_Exp_When_Called_With_Null_File_Name()
         {
-            _subtitleService.FindSubtitles("", "tr");
+            _subtitleService.FindSubtitles("", SubtitleLanguages.Turkish);
         }
 
         [Test]
@@ -85,7 +86,7 @@ namespace EasySubtitle.Tests
         {
             var filePath = mediaPaths.First();
             var directoryPath = Path.GetDirectoryName(filePath);
-            var subtitle = _subtitleService.FindSubtitles(filePath, "en").FirstOrDefault();
+            var subtitle = _subtitleService.FindSubtitles(filePath, SubtitleLanguages.English).FirstOrDefault();
             _subtitleService.DownloadSubtitle(subtitle, directoryPath);
             Assert.That(File.Exists(String.Concat(directoryPath, Path.DirectorySeparatorChar, subtitle.SubtitleFileName)), Is.True);
         }
@@ -95,7 +96,7 @@ namespace EasySubtitle.Tests
         {
             var filePath = mediaPaths.First();
             var directoryPath = Path.GetDirectoryName(filePath);
-            var subtitle = _subtitleService.FindSubtitles(filePath, "en").FirstOrDefault();
+            var subtitle = _subtitleService.FindSubtitles(filePath, SubtitleLanguages.English).FirstOrDefault();
             _subtitleService.DownloadSubtitleAdjusted(subtitle, filePath);
             Assert.That(File.Exists(String.Concat(directoryPath, Path.DirectorySeparatorChar, Path.GetFileNameWithoutExtension(filePath), ".srt")), Is.True);
         }
@@ -105,7 +106,7 @@ namespace EasySubtitle.Tests
         {
             var filePath = mediaPaths.First();
             var directoryPath = Path.GetDirectoryName(filePath);
-            var subtitles = _subtitleService.FindSubtitles(filePath, "en");
+            var subtitles = _subtitleService.FindSubtitles(filePath, SubtitleLanguages.English);
             _subtitleService.DownloadSubtitles(subtitles, directoryPath);
             foreach (var subtitle in subtitles)
             {
@@ -143,6 +144,16 @@ namespace EasySubtitle.Tests
         public void Throw_ArgumentNullException_When_Called_DownloadSubtitles_With_Null_DirectoryPath()
         {
             _subtitleService.DownloadSubtitles(new List<Subtitle> { new Subtitle() }, null);
+        }
+
+        [Test]
+        public void Return_List_Of_Languages_When_Called_GetSubtitleLanguages()
+        {
+            var languages = _subtitleService.GetSubtitleLanguages();
+            Assert.NotNull(languages);
+            Assert.IsNotEmpty(languages);
+
+            languages.ToList().ForEach(x => Debug.WriteLine("{0} - {1} - {2}", x.SubLanguageID, x.LanguageName, x.ISO639));
         }
 
     }

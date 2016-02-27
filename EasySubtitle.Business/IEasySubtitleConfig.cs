@@ -7,6 +7,7 @@ namespace EasySubtitle.Business
         string UserAgent { get; set; }
         string DefaultSubtitleLanguage { get; set; }
         IList<string> SelectedSubtitleLanguages { get; set; }
+        string ApplicationDirectoryPath { get; set; }
 
         void ResetToDefaults();
     }

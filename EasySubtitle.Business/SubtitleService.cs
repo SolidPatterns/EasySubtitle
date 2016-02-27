@@ -148,6 +148,14 @@ namespace EasySubtitle.Business
             subs.ToList().ForEach(subtitle => DownloadSubtitle(client, subtitle, downlaodPath));
         }
 
+        public IEnumerable<Language> GetSubtitleLanguages()
+        {
+            using (var client = EasySubtitleClientFactory.GetSubtitleClient())
+            {
+                return client.GetSubLanguages();
+            }
+        }
+
         private void DownloadSubtitle(Subtitle subtitle, string downlaodPath, string filePathForAdjustment)
         {
             using (var client = EasySubtitleClientFactory.GetSubtitleClient(_credentials))

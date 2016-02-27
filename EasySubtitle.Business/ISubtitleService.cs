@@ -41,6 +41,7 @@ namespace EasySubtitle.Business
 
         void DownloadSubtitles(IAnonymousClient client, IEnumerable<Subtitle> subtitles, string downlaodPath);
 
-        
+
+        IEnumerable<Language> GetSubtitleLanguages();
     }
 }

@@ -1,0 +1,80 @@
+﻿using System;
+
+namespace EasySubtitle.Business.Models
+{
+    public static class SubtitleLanguages
+    {
+        public const String Afrikaans = "afr";
+        public const String Albanian = "alb";
+        public const String Arabic = "ara";
+        public const String Armenian = "arm";
+        public const String Asturian = "ast";
+        public const String Basque = "baq";
+        public const String Belarusian = "bel";
+        public const String Bengali = "ben";
+        public const String Bosnian = "bos";
+        public const String Breton = "bre";
+        public const String Bulgarian = "bul";
+        public const String Burmese = "bur";
+        public const String Catalan = "cat";
+        public const String ChineseSimplified = "chi";
+        public const String ChineseTraditional = "zht";
+        public const String ChineseBilingual = "zhe";
+        public const String Croatian = "hrv";
+        public const String Czech = "cze";
+        public const String Danish = "dan";
+        public const String Dutch = "dut";
+        public const String English = "eng";
+        public const String Esperanto = "epo";
+        public const String Estonian = "est";
+        public const String Finnish = "fin";
+        public const String French = "fre";
+        public const String Galician = "glg";
+        public const String Georgian = "geo";
+        public const String German = "ger";
+        public const String Greek = "ell";
+        public const String Hebrew = "heb";
+        public const String Hindi = "hin";
+        public const String Hungarian = "hun";
+        public const String Icelandic = "ice";
+        public const String Indonesian = "ind";
+        public const String Italian = "ita";
+        public const String Japanese = "jpn";
+        public const String Kazakh = "kaz";
+        public const String Khmer = "khm";
+        public const String Korean = "kor";
+        public const String Latvian = "lav";
+        public const String Lithuanian = "lit";
+        public const String Luxembourgish = "ltz";
+        public const String Macedonian = "mac";
+        public const String Malay = "may";
+        public const String Malayalam = "mal";
+        public const String Manipuri = "mni";
+        public const String Mongolian = "mon";
+        public const String Montenegrin = "mne";
+        public const String Norwegian = "nor";
+        public const String Occitan = "oci";
+        public const String Persian = "per";
+        public const String Polish = "pol";
+        public const String Portuguese = "por";
+        public const String PortugueseBr = "pob";
+        public const String Romanian = "rum";
+        public const String Russian = "rus";
+        public const String Serbian = "scc";
+        public const String Sinhalese = "sin";
+        public const String Slovak = "slo";
+        public const String Slovenian = "slv";
+        public const String Spanish = "spa";
+        public const String Swahili = "swa";
+        public const String Swedish = "swe";
+        public const String Syriac = "syr";
+        public const String Tagalog = "tgl";
+        public const String Tamil = "tam";
+        public const String Telugu = "tel";
+        public const String Thai = "tha";
+        public const String Turkish = "tur";
+        public const String Ukrainian = "ukr";
+        public const String Urdu = "urd";
+        public const String Vietnamese = "vie";
+    }
+}

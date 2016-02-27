@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using EasySubtitle.Business.Models;
 
 namespace EasySubtitle.Business
 {
@@ -85,7 +86,7 @@ namespace EasySubtitle.Business
             {
                 var defaultSubtitleLanguage = GetConfigurationValue(DefaultSubtitleLanguageKey);
                 if (string.IsNullOrWhiteSpace(defaultSubtitleLanguage))
-                    return "en";
+                    return SubtitleLanguages.English;
 
                 return defaultSubtitleLanguage;
             }
@@ -120,7 +121,7 @@ namespace EasySubtitle.Business
             {
                 var selectedSubtitleLanguages = GetConfigurationValue(SelectedSubtitleLanguagesKey);
                 if (string.IsNullOrWhiteSpace(selectedSubtitleLanguages))
-                    return new[] { "en" };
+                    return new[] { SubtitleLanguages.English };
 
                 String[] subtitleLanguages;
                 try
@@ -129,7 +130,7 @@ namespace EasySubtitle.Business
                 }
                 catch
                 {
-                    subtitleLanguages = new[] { "en" };
+                    subtitleLanguages = new[] { SubtitleLanguages.English };
                 }
 
                 return subtitleLanguages;
@@ -142,6 +143,8 @@ namespace EasySubtitle.Business
                 SetConfigurationValue(SelectedSubtitleLanguagesKey, string.Join(",", value));
             }
         }
+
+        public string ApplicationDirectoryPath { get; set; }
 
         public void ResetToDefaults()
         {

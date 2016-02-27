@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasySubtitle.Console", "EasySubtitle.Console\EasySubtitle.Console.csproj", "{A87385EA-2865-4DA2-865A-1D88021D7791}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasySubtitle.WPF", "EasySubtitle.WPF\EasySubtitle.WPF.csproj", "{E18BFF67-6B78-4879-8BAB-48053DC6C3BD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasySubtitle.Business", "EasySubtitle.Business\EasySubtitle.Business.csproj", "{FA816B98-0415-440E-8FB0-614EDD77C998}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "EasySubtitle.Installer", "EasySubtitle.Installer\EasySubtitle.Installer.vdproj", "{F7D27909-431A-4B9D-B45E-87284B55DC16}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,9 @@ Global
 		{FA816B98-0415-440E-8FB0-614EDD77C998}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA816B98-0415-440E-8FB0-614EDD77C998}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA816B98-0415-440E-8FB0-614EDD77C998}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7D27909-431A-4B9D-B45E-87284B55DC16}.Debug|Any CPU.ActiveCfg = Debug
+		{F7D27909-431A-4B9D-B45E-87284B55DC16}.Release|Any CPU.ActiveCfg = Release
+		{F7D27909-431A-4B9D-B45E-87284B55DC16}.Release|Any CPU.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,41 +1,28 @@
 ﻿using System;
-using System.IO;
+using System.Linq;
 using EasySubtitle.Business;
-using EasySubtitle.WPF;
-using EasySubtitle.WPF.ViewModels;
-using EasySubtitle.WPF.Windows;
 
 namespace EasySubtitle.Console
 {
     class Program
     {
-        [STAThread]
         static void Main(string[] args)
         {
-            var app = new App();
-            
-            //RunProgressDialog(app);
+            if (args == null || !args.Any())
+                return;
 
-            var advancedSearchSubtitles = new AdvancedSubtitlesWindow
+            var arg = args[0];
+
+            var setupManager = new SetupManager();
+
+            if (arg.Equals("install", StringComparison.OrdinalIgnoreCase))
             {
-                DataContext = new SearchAdvancedSubtitleViewModel(Directory.GetFiles("F:/Videos/Series/Arrow/S3", "*.mkv"), EasySubtitleFactory.Instance.GetSubtitleService())
-            };
-            app.Run(advancedSearchSubtitles);
-
-            //var settingsViewModel = new SettingsViewModel();
-            //var settingsWindow = new SettingsWindow();
-            //settingsWindow.DataContext = settingsViewModel;
-            //app.Run(settingsWindow);
-
-            System.Console.ReadLine();
-        }
-
-        private static void RunProgressDialog(App app)
-        {
-            var progressDialog = new ProgressDialogWindow();
-            var progressDialogViewModel = new ProgressDialogViewModel();
-            progressDialog.DataContext = progressDialogViewModel;
-            app.Run(progressDialog);
+                setupManager.Install();
+            }
+            if (arg.Equals("uninstall", StringComparison.OrdinalIgnoreCase))
+            {
+                setupManager.Uninstall();
+            }
         }
     }
 }

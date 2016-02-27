@@ -29,6 +29,14 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Release\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="CookComputing.XmlRpcV2">
       <HintPath>..\packages\xmlrpcnet.2.5.0\lib\net20\CookComputing.XmlRpcV2.dll</HintPath>
@@ -52,9 +60,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EasySubtitleConfig.cs" />
+    <Compile Include="Models\SubtitleLanguages.cs" />
     <Compile Include="IDownloadSubtitleService.cs" />
     <Compile Include="IEasySubtitleConfig.cs" />
     <Compile Include="IEasySubtitleFactory.cs" />
+    <Compile Include="SetupManager.cs" />
     <Compile Include="ISubtitleClientCredentials.cs" />
     <Compile Include="ISubtitleService.cs" />
     <Compile Include="Models\FoundSubtitle.cs" />

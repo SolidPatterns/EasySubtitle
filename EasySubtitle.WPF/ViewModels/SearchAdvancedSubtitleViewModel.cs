@@ -24,7 +24,7 @@ namespace EasySubtitle.WPF.ViewModels
         private CancellationTokenSource _tokenSource;
         private ProgressDialogViewModel _dataContext;
         private ProgressDialogWindow _progress;
-        private readonly string[] _languages = { "en" };
+        private readonly string[] _languages = { SubtitleLanguages.English };
 
         public SearchAdvancedSubtitleViewModel(IEnumerable<string> selectedFilePaths, ISubtitleService subtitleService)
         {
