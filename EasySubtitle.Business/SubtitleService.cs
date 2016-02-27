@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -27,7 +30,11 @@ namespace EasySubtitle.Business
             {
                 foreach (var filePath in filePaths)
                 {
-                    subtitleDictionary.Add(filePath, FindSubtitles(client, filePath, languages));
+                    var subtitles = FindSubtitles(client, filePath, languages).ToList();
+                    if (subtitles.Any())
+                    {
+                        subtitleDictionary.Add(filePath, subtitles);
+                    }
                 }
             }
 
@@ -168,7 +175,7 @@ namespace EasySubtitle.Business
             var subtitleFileNameToCreate = GetFullSubtitleFileNameToMatchMediaFile(filePathForAdjustment, downlaodPath);
             if (!subtitle.SubtitleFileName.Equals(subtitleFileNameToCreate.Split(Path.DirectorySeparatorChar).Last()))
                 File.Delete(subtitleFileNameToCreate);
-            
+
             var fullSubtitleFileName = GetFullSubtitleFileName(downlaodPath, subtitle);
             if (File.Exists(fullSubtitleFileName))
                 File.Move(fullSubtitleFileName, subtitleFileNameToCreate);

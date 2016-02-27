@@ -72,11 +72,9 @@
   </Choose>
   <ItemGroup>
     <Compile Include="EasySubtitleConfigShould.cs" />
-    <Compile Include="ReadWriteXml.cs" />
     <Compile Include="SubtitleServiceShould.cs" />
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="ShellExtensionRegisterShould.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProgressBarShould.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

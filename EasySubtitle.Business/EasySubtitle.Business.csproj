@@ -59,6 +59,7 @@
     <Compile Include="ISubtitleService.cs" />
     <Compile Include="Models\FoundSubtitle.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="RegistryConfig.cs" />
     <Compile Include="SubtitleClientCredentials.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EasySubtitleClientFactory.cs" />

@@ -11,7 +11,7 @@
 
         public SubtitleClientCredentials()
         {
-            _easySubtitleConfig = EasySubtitleConfig.GetEasySubtitleConfig();
+            _easySubtitleConfig = RegistryConfig.GetEasySubtitleConfig();
         }
 
         public string UserAgent { get; set; }

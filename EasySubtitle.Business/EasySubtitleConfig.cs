@@ -51,7 +51,7 @@ namespace EasySubtitle.Business
                     }
 
                     _configDictionary.Add(configKey, configValue);
-                }   
+                }
             }
         }
 
@@ -85,7 +85,7 @@ namespace EasySubtitle.Business
             {
                 var defaultSubtitleLanguage = GetConfigurationValue(DefaultSubtitleLanguageKey);
                 if (string.IsNullOrWhiteSpace(defaultSubtitleLanguage))
-                    return "eng";
+                    return "en";
 
                 return defaultSubtitleLanguage;
             }
@@ -109,7 +109,7 @@ namespace EasySubtitle.Business
             {
                 throw new ArgumentException("languages");
             }
-            
+
             var languagesCommaSeparated = String.Join(",", languages);
             SetConfigurationValue(SelectedSubtitleLanguagesKey, languagesCommaSeparated);
         }
@@ -120,7 +120,7 @@ namespace EasySubtitle.Business
             {
                 var selectedSubtitleLanguages = GetConfigurationValue(SelectedSubtitleLanguagesKey);
                 if (string.IsNullOrWhiteSpace(selectedSubtitleLanguages))
-                    return new[] { "eng" };
+                    return new[] { "en" };
 
                 String[] subtitleLanguages;
                 try
@@ -129,7 +129,7 @@ namespace EasySubtitle.Business
                 }
                 catch
                 {
-                    subtitleLanguages = new[] { "eng" };
+                    subtitleLanguages = new[] { "en" };
                 }
 
                 return subtitleLanguages;
@@ -141,6 +141,11 @@ namespace EasySubtitle.Business
 
                 SetConfigurationValue(SelectedSubtitleLanguagesKey, string.Join(",", value));
             }
+        }
+
+        public void ResetToDefaults()
+        {
+            throw new NotImplementedException();
         }
 
         public static IEasySubtitleConfig GetEasySubtitleConfig()

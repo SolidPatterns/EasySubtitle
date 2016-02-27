@@ -12,24 +12,38 @@ namespace EasySubtitle.Tests
         [SetUp]
         public void SetUp()
         {
-            Config = EasySubtitleConfig.GetEasySubtitleConfig();
+            Config = RegistryConfig.GetEasySubtitleConfig();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            Config.ResetToDefaults();
         }
 
         [Test]
         public void Change_Default_Subtitile_Language_When_Set_Value()
         {
-            const string newDefaultSubtitileLanguage = "tur";
-            Config.SetDefaultSubtitileLanguage(newDefaultSubtitileLanguage);
+            const string newDefaultSubtitileLanguage = "tr";
+            Config.DefaultSubtitleLanguage = newDefaultSubtitileLanguage;
             Assert.AreEqual(newDefaultSubtitileLanguage, Config.DefaultSubtitleLanguage);
         }
 
         [Test]
         public void Change_Selected_Subtitile_Languages_When_Set_Value()
         {
-            const string expectedNewSelectedSubtitileLanguage = "tur,eng";
-            var subtitleList = new List<string>() {"tur", "eng"};
-            Config.SetSelectedSubtitleLanguages(subtitleList);
+            const string expectedNewSelectedSubtitileLanguage = "tr,en";
+            var subtitleList = new List<string>() {"tr", "en"};
+            Config.SelectedSubtitleLanguages = subtitleList;
             Assert.AreEqual(expectedNewSelectedSubtitileLanguage, string.Join(",",Config.SelectedSubtitleLanguages));
+        }
+
+        [Test]
+        public void Change_UserAgent_When_Set_Value()
+        {
+            const string newUserAgent = "some user agent";
+            Config.UserAgent = newUserAgent;
+            Assert.AreEqual(newUserAgent, Config.UserAgent);
         }
     }
 }

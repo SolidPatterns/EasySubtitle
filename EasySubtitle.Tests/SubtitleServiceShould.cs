@@ -16,9 +16,9 @@ namespace EasySubtitle.Tests
         private ISubtitleService _subtitleService;
         private readonly List<string> mediaPaths = new List<string>
         {
-            "F:/Videos/Series/Supernatural/Supernatural.S10E11.1080p.HDTV.X264-DIMENSION.mkv",
-            "F:/Videos/Series/Supernatural/Supernatural.S10E13.1080p.HDTV.X264-DIMENSION.mkv",
-            "F:/Videos/Series/Supernatural/Supernatural.S10E14.1080p.HDTV.X264-DIMENSION.mkv"
+            "E:/Videos/Series/Suits/Suits.S05E13.1080p.WEB-DL.DD5.1.H264-RARBG.mkv",
+            "E:/Videos/Series/Suits/Suits.S05E14.1080p.WEB-DL.DD5.1.H264-RARBG.mkv",
+            "E:/Videos/Series/Suits/Suits.S05E15.1080p.WEB-DL.DD5.1.H264-RARBG.mkv"
         };
 
         [SetUp]
@@ -30,7 +30,7 @@ namespace EasySubtitle.Tests
         [Test]
         public void Return_Subtitles_For_Multiple_Files_And_Languages()
         {
-            var subtitles = _subtitleService.FindSubtitles(mediaPaths, "tur", "eng");
+            var subtitles = _subtitleService.FindSubtitles(mediaPaths, "tr", "en");
             Assert.That(subtitles, Is.Not.Null);
             Assert.That(subtitles.Any(), Is.True);
         }
@@ -48,7 +48,7 @@ namespace EasySubtitle.Tests
                     Debug.WriteLine("Count: {0}", args: count);
                     using (var client = EasySubtitleClientFactory.GetSubtitleClient())
                     {
-                        subtitles.AddRange(_subtitleService.FindSubtitles(client, path, "eng"));
+                        subtitles.AddRange(_subtitleService.FindSubtitles(client, path, "en"));
                     }
                 });
             });
@@ -61,7 +61,7 @@ namespace EasySubtitle.Tests
         [Test]
         public void Return_Subtitles_For_One_File_And_One_Language()
         {
-            var subtitles = _subtitleService.FindSubtitles(mediaPaths.First(), "tur");
+            var subtitles = _subtitleService.FindSubtitles(mediaPaths.First(), "tr");
             Assert.That(subtitles, Is.Not.Null);
             Assert.That(subtitles.Any(), Is.True);
         }
@@ -70,7 +70,7 @@ namespace EasySubtitle.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Throw_Arg_Null_Exp_When_Called_With_Null_File_Name()
         {
-            _subtitleService.FindSubtitles("", "tur");
+            _subtitleService.FindSubtitles("", "tr");
         }
 
         [Test]
@@ -85,7 +85,7 @@ namespace EasySubtitle.Tests
         {
             var filePath = mediaPaths.First();
             var directoryPath = Path.GetDirectoryName(filePath);
-            var subtitle = _subtitleService.FindSubtitles(filePath, "eng").FirstOrDefault();
+            var subtitle = _subtitleService.FindSubtitles(filePath, "en").FirstOrDefault();
             _subtitleService.DownloadSubtitle(subtitle, directoryPath);
             Assert.That(File.Exists(String.Concat(directoryPath, Path.DirectorySeparatorChar, subtitle.SubtitleFileName)), Is.True);
         }
@@ -95,7 +95,7 @@ namespace EasySubtitle.Tests
         {
             var filePath = mediaPaths.First();
             var directoryPath = Path.GetDirectoryName(filePath);
-            var subtitle = _subtitleService.FindSubtitles(filePath, "eng").FirstOrDefault();
+            var subtitle = _subtitleService.FindSubtitles(filePath, "en").FirstOrDefault();
             _subtitleService.DownloadSubtitleAdjusted(subtitle, filePath);
             Assert.That(File.Exists(String.Concat(directoryPath, Path.DirectorySeparatorChar, Path.GetFileNameWithoutExtension(filePath), ".srt")), Is.True);
         }
@@ -105,7 +105,7 @@ namespace EasySubtitle.Tests
         {
             var filePath = mediaPaths.First();
             var directoryPath = Path.GetDirectoryName(filePath);
-            var subtitles = _subtitleService.FindSubtitles(filePath, "eng");
+            var subtitles = _subtitleService.FindSubtitles(filePath, "en");
             _subtitleService.DownloadSubtitles(subtitles, directoryPath);
             foreach (var subtitle in subtitles)
             {

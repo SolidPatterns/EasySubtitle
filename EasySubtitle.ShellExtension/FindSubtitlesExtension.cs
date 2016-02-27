@@ -17,8 +17,16 @@ namespace EasySubtitle.ShellExtension
     [COMServerAssociation(AssociationType.AllFiles)]
     public class FindSubtitlesExtension : SharpContextMenu
     {
-        private readonly string[] _languages = { "tur" };
+        private readonly IEasySubtitleConfig _config;
 
+        private readonly string[] _languages;
+
+        public FindSubtitlesExtension()
+        {
+            _config = RegistryConfig.GetEasySubtitleConfig();
+            _languages = _config.SelectedSubtitleLanguages.ToArray();
+        }
+        
         protected override bool CanShowMenu()
         {
             return true;
