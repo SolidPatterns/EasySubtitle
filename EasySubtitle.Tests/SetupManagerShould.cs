@@ -1,5 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using EasySubtitle.Business;
+using EasySubtitle.Console;
 using NUnit.Framework;
 
 namespace EasySubtitle.Tests
@@ -12,8 +14,8 @@ namespace EasySubtitle.Tests
         [SetUp]
         public void SetUp()
         {
-            RegistryConfig.GetEasySubtitleConfig().ResetToDefaults();
-            _setupManager = new SetupManager();
+            RegistryConfig.Instance.ResetToDefaults(AppDomain.CurrentDomain.BaseDirectory);
+            _setupManager = new SetupManager(AppDomain.CurrentDomain.BaseDirectory);
             Debug.WriteLine(_setupManager.InstallerExecutableLocation);
             Debug.WriteLine(_setupManager.ShellExtensionDllLocation);
         }

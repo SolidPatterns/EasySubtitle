@@ -15,7 +15,9 @@
                   ItemsSource="{Binding SelectedFile.Subtitles}" AutoGenerateColumns="False" Margin="600,10,0,0" SelectionMode="Extended">
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Binding="{Binding Checked}"></DataGridCheckBoxColumn>
-                <DataGridTextColumn Binding="{Binding SubtitleName}" Header="Subtitle Name" Width="*"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding SubtitleName}" Header="Name" Width="*"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Subtitle.LanguageName}" Header="Language" Width="*"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Subtitle.Rating}" Header="Rating" Width="*"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
         <Button Content="Download Selected" Command="{Binding Download}" Width="150" Margin="1034,415,10,10"/>

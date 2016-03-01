@@ -11,7 +11,7 @@
 
         public SubtitleClientCredentials()
         {
-            _easySubtitleConfig = RegistryConfig.GetEasySubtitleConfig();
+            _easySubtitleConfig = RegistryConfig.Instance;
         }
 
         public string UserAgent { get; set; }
@@ -28,7 +28,7 @@
         {
             var userAgent = _easySubtitleConfig.UserAgent;
             if (string.IsNullOrWhiteSpace(userAgent))
-                userAgent = "OSTestUserAgent";
+                userAgent = "EasySubtitleQuemarlos";
             return userAgent;
         }
     }

@@ -24,18 +24,19 @@ namespace EasySubtitle.WPF.ViewModels
         private CancellationTokenSource _tokenSource;
         private ProgressDialogViewModel _dataContext;
         private ProgressDialogWindow _progress;
-        private readonly string[] _languages = { SubtitleLanguages.English };
+        private static readonly IEasySubtitleConfig Config = RegistryConfig.Instance;
 
         public SearchAdvancedSubtitleViewModel(IEnumerable<string> selectedFilePaths, ISubtitleService subtitleService)
         {
             _subtitleService = subtitleService;
-            if (selectedFilePaths == null || !selectedFilePaths.Any()) throw new ArgumentNullException("selectedFilePaths");
+            var filePaths = selectedFilePaths as IList<string> ?? selectedFilePaths.ToList();
+            if (selectedFilePaths == null || !filePaths.Any()) throw new ArgumentNullException("selectedFilePaths");
 
             PropertyChanged += SelectedFileChanged;
 
             SelectedFiles = new List<SelectedFile>();
 
-            selectedFilePaths.ToList().ForEach(x => SelectedFiles.Add(new SelectedFile(x)));
+            filePaths.ToList().ForEach(x => SelectedFiles.Add(new SelectedFile(x)));
             SelectedFile = SelectedFiles.FirstOrDefault();
 
             Download = new DelegateCommand(() =>
@@ -107,19 +108,20 @@ namespace EasySubtitle.WPF.ViewModels
                     {
                         var selectedSubtitles =
                             selectedFile.Subtitles.Where(sub => sub.Checked).Select(sub => sub.Subtitle);
-                        if (selectedSubtitles.Count() > 1)
+                        var subtitles = selectedSubtitles as IList<Subtitle> ?? selectedSubtitles.ToList();
+                        if (subtitles.Count() > 1)
                         {
-                            _subtitleService.DownloadSubtitles(taskClient, selectedSubtitles, selectedFile.DirectoryPath);
+                            _subtitleService.DownloadSubtitles(taskClient, subtitles, selectedFile.DirectoryPath);
                             IncrementProgressCounter();
                             return;
                         }
                             
-                        _subtitleService.DownloadSubtitleAdjusted(taskClient, selectedSubtitles.First(), selectedFile.File);
+                        _subtitleService.DownloadSubtitleAdjusted(taskClient, subtitles.First(), selectedFile.File);
                         IncrementProgressCounter();
                         return;
                     }
 
-                    var subtitle = _subtitleService.FindSubtitles(taskClient, selectedFile.File, _languages).FirstOrDefault();
+                    var subtitle = _subtitleService.FindSubtitles(taskClient, selectedFile.File, Languages).FirstOrDefault();
                     if (subtitle == null)
                     {
                         IncrementProgressCounter();
@@ -150,7 +152,7 @@ namespace EasySubtitle.WPF.ViewModels
 
             file.Searched = true;
 
-            var subtitles = (await _subtitleService.FindSubtitlesAsync(file.File, _languages)).Select(sub => new FoundSubtitle { Subtitle = sub }).ToList();
+            var subtitles = (await _subtitleService.FindSubtitlesAsync(file.File, Languages)).Select(sub => new FoundSubtitle { Subtitle = sub }).ToList();
             var firstSub = subtitles.FirstOrDefault();
             if (firstSub != null)
                 firstSub.Checked = true;
@@ -158,6 +160,11 @@ namespace EasySubtitle.WPF.ViewModels
             file.Subtitles = subtitles;
 
             base.RaisePropertyChangedEvent(SelectedFilePropertyName);
+        }
+
+        public string[] Languages
+        {
+            get { return Config.SelectedSubtitleLanguages.ToArray(); }
         }
 
         public SelectedFile SelectedFile

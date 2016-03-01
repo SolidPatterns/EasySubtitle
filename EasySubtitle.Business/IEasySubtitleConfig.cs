@@ -9,6 +9,6 @@ namespace EasySubtitle.Business
         IList<string> SelectedSubtitleLanguages { get; set; }
         string ApplicationDirectoryPath { get; set; }
 
-        void ResetToDefaults();
+        void ResetToDefaults(string targetDir);
     }
 }

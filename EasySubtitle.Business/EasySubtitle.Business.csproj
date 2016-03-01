@@ -64,7 +64,6 @@
     <Compile Include="IDownloadSubtitleService.cs" />
     <Compile Include="IEasySubtitleConfig.cs" />
     <Compile Include="IEasySubtitleFactory.cs" />
-    <Compile Include="SetupManager.cs" />
     <Compile Include="ISubtitleClientCredentials.cs" />
     <Compile Include="ISubtitleService.cs" />
     <Compile Include="Models\FoundSubtitle.cs" />

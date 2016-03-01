@@ -14,13 +14,13 @@ namespace EasySubtitle.Tests
         [SetUp]
         public void SetUp()
         {
-            Config = RegistryConfig.GetEasySubtitleConfig();
+            Config = RegistryConfig.Instance;
         }
 
         [TearDown]
         public void TearDown()
         {
-            Config.ResetToDefaults();
+            Config.ResetToDefaults(AppDomain.CurrentDomain.BaseDirectory);
         }
 
         [Test]

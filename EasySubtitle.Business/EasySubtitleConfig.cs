@@ -66,7 +66,7 @@ namespace EasySubtitle.Business
                 var userAgent = GetApplicationConfigurationValue(SubtitleClientUserAgentKey);
 
                 if (string.IsNullOrWhiteSpace(userAgent))
-                    return _userAgent = "OSTestUserAgent";
+                    return _userAgent = "EasySubtitleQuemarlos";
 
                 return _userAgent = userAgent;
             }
@@ -146,7 +146,7 @@ namespace EasySubtitle.Business
 
         public string ApplicationDirectoryPath { get; set; }
 
-        public void ResetToDefaults()
+        public void ResetToDefaults(string targetDir)
         {
             throw new NotImplementedException();
         }

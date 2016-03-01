@@ -10,9 +10,9 @@ namespace EasySubtitle.Tests
     {
 
         private readonly string _registerDllName = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
-                "..\\..\\..\\EasySubtitle.ShellExtension\\bin\\Debug\\EasySubtitle.ShellExtension.dll"));
+                "..\\..\\..\\EasySubtitle.ShellExtension\\bin\\Release\\EasySubtitle.ShellExtension.dll"));
         private readonly string _srmFileLocation = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
-            "..\\..\\..\\EasySubtitle.ShellExtension\\bin\\Debug\\srm.exe"));
+            "..\\..\\..\\EasySubtitle.ShellExtension\\bin\\Release\\srm.exe"));
 
         [SetUp]
         public void SetUp()

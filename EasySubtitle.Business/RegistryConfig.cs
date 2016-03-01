@@ -9,29 +9,41 @@ namespace EasySubtitle.Business
     public class RegistryConfig : IEasySubtitleConfig
     {
         private readonly RegistryKey _registryKey;
+        private static volatile RegistryConfig _instance = null;
+        private static Object _synchronized = new object();
 
-        private const string DefaultUserAgent = "OSTestUserAgent";
+        private const string DefaultUserAgent = "EasySubtitleQuemarlos";
         private const string SubtitleClientUserAgentKey = "SubtitleClientUserAgent";
         private const string DefaultSubtitleLanguageKey = "DefaultSubtitleLanguage";
         private const string SelectedSubtitleLanguagesKey = "SelectedSubtitleLanguages";
         private const string ApplicationDirectoryPathKey = "ApplicationDirectoryPath";
 
-        public RegistryConfig()
+        private RegistryConfig()
         {
-            _registryKey = Registry.CurrentUser.CreateSubKey("EasySubtitle");
+            Console.WriteLine("Creating the registery sub key.");
+            _registryKey = Registry.CurrentUser.CreateSubKey("SOFTWARE\\SolidPatterns\\EasySubtitle");
 
             if (_registryKey == null)
                 throw new InvalidOperationException("Program failed to start.");
-
-            if (_registryKey.ValueCount == 0)
-            {
-                ResetToDefaults();
-            }
         }
 
-        public static IEasySubtitleConfig GetEasySubtitleConfig()
+        public static IEasySubtitleConfig Instance
         {
-            return new RegistryConfig();
+            get
+            {
+                if (_instance == null)
+                {
+                    lock (_synchronized)
+                    {
+                        if (_instance == null)
+                        {
+                            _instance = new RegistryConfig();
+                        }
+                    }   
+                }
+
+                return _instance;
+            }
         }
 
         public string UserAgent
@@ -50,11 +62,11 @@ namespace EasySubtitle.Business
         {
             get
             {
-                return _registryKey.GetValue(SubtitleClientUserAgentKey).ToString();
+                return _registryKey.GetValue(DefaultSubtitleLanguageKey).ToString();
             }
             set
             {
-                _registryKey.SetValue(SubtitleClientUserAgentKey, value);
+                _registryKey.SetValue(DefaultSubtitleLanguageKey, value);
             }
         }
         public IList<string> SelectedSubtitleLanguages
@@ -84,17 +96,13 @@ namespace EasySubtitle.Business
         }
 
 
-        public void ResetToDefaults()
+        public void ResetToDefaults(String targetDir)
         {
-            _registryKey.SetValue(SubtitleClientUserAgentKey, DefaultUserAgent);
-            _registryKey.SetValue(DefaultSubtitleLanguageKey, SubtitleLanguages.Turkish);
-            _registryKey.SetValue(SelectedSubtitleLanguagesKey, new List<String> { SubtitleLanguages.English, SubtitleLanguages.Turkish });
-
-            var programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
-            const string companyDirectoryName = "SolidPatterns";
-            const string applicationDirectoryName = "EasySubtitle";
-
-            _registryKey.SetValue(ApplicationDirectoryPathKey, String.Format("{0}\\{1}\\{2}", programFiles, companyDirectoryName, applicationDirectoryName));
+            Console.WriteLine("Resetting registery config to defaults. Target dir : {0}", targetDir);
+            UserAgent = DefaultUserAgent;
+            DefaultSubtitleLanguage =  SubtitleLanguages.Turkish;
+            SelectedSubtitleLanguages = new List<String> { SubtitleLanguages.English, SubtitleLanguages.Turkish };
+            ApplicationDirectoryPath = targetDir;
         }
     }
 }

@@ -1,20 +1,30 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using EasySubtitle.Business;
 
-namespace EasySubtitle.Business
+namespace EasySubtitle.Console
 {
     public class SetupManager
     {
-        private readonly IEasySubtitleConfig _config;
+        private readonly string _targetDir;
 
         private const String InstallerExecutableName = "srm.exe";
         private const String ShellExtensionDllName = "EasySubtitle.ShellExtension.dll";
 
-        public SetupManager()
+        public SetupManager(String targetDir)
         {
-            _config = RegistryConfig.GetEasySubtitleConfig();
-            
+            try
+            {
+                _targetDir = Path.GetFullPath(targetDir);
+                System.Console.WriteLine("Initializing registery config.");
+                RegistryConfig.Instance.ResetToDefaults(_targetDir);
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine("Setup manager initialization failed. Details : {0}", ex.Message);
+                throw;
+            }
         }
 
         public void Install()
@@ -28,7 +38,7 @@ namespace EasySubtitle.Business
                     UseShellExecute = true,
                     CreateNoWindow = true,
 
-                    Arguments = String.Format(@"install {0} -codebase", ShellExtensionDllLocation),
+                    Arguments = String.Format("install \"{0}\" -codebase", ShellExtensionDllLocation),
                 });
         }
 
@@ -43,18 +53,18 @@ namespace EasySubtitle.Business
                     UseShellExecute = true,
                     CreateNoWindow = true,
 
-                    Arguments = String.Format(@"uninstall {0}", ShellExtensionDllLocation),
+                    Arguments = String.Format("uninstall \"{0}\"", ShellExtensionDllLocation),
                 });
         }
 
         public string InstallerExecutableLocation
         {
-            get { return Path.GetFullPath(String.Format("{0}\\{1}", _config.ApplicationDirectoryPath, InstallerExecutableName)); }
+            get { return Path.GetFullPath(String.Format("{0}\\{1}", _targetDir, InstallerExecutableName)); }
         }
 
         public string ShellExtensionDllLocation
         {
-            get { return Path.GetFullPath(String.Format("{0}\\{1}", _config.ApplicationDirectoryPath, ShellExtensionDllName)); }
+            get { return Path.GetFullPath(String.Format("{0}\\{1}", _targetDir, ShellExtensionDllName)); }
         }
     }
 }

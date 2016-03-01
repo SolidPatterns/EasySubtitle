@@ -18,13 +18,24 @@ namespace EasySubtitle.ShellExtension
     public class FindSubtitlesExtension : SharpContextMenu
     {
         private readonly IEasySubtitleConfig _config;
-
-        private readonly string[] _languages;
+        private const String Source = "EasySubtitle.ShellExtension";
+        private const String LogType = "Application";
+        private const String Event = "Error";
 
         public FindSubtitlesExtension()
         {
-            _config = RegistryConfig.GetEasySubtitleConfig();
-            _languages = _config.SelectedSubtitleLanguages.ToArray();
+            if (!EventLog.SourceExists(Source))
+                EventLog.CreateEventSource(Source, LogType);
+
+            try
+            {
+                _config = RegistryConfig.Instance;
+            }
+            catch (Exception ex)
+            {
+                EventLog.WriteEntry(Source, ex.Message, EventLogEntryType.Error);
+                throw;
+            }
         }
         
         protected override bool CanShowMenu()
@@ -95,7 +106,7 @@ namespace EasySubtitle.ShellExtension
                     {
                         Debug.WriteLine("Finding subtitles for {0}", args: path);
                         Debug.WriteLine("Count: {0}", args: count);
-                        var subtitle = subtitleService.FindSubtitles(anonymousClient, path, _languages).FirstOrDefault();
+                        var subtitle = subtitleService.FindSubtitles(anonymousClient, path, _config.DefaultSubtitleLanguage).FirstOrDefault();
                         if (subtitle == null)
                             return;
                         subtitleService.DownloadSubtitleAdjusted(anonymousClient, subtitle, path);

@@ -104,9 +104,13 @@
       <Project>{FA816B98-0415-440E-8FB0-614EDD77C998}</Project>
       <Name>EasySubtitle.Business</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EasySubtitle.WPF\EasySubtitle.WPF.csproj">
-      <Project>{E18BFF67-6B78-4879-8BAB-48053DC6C3BD}</Project>
-      <Name>EasySubtitle.WPF</Name>
+    <ProjectReference Include="..\EasySubtitle.Console\EasySubtitle.Console.csproj">
+      <Project>{A87385EA-2865-4DA2-865A-1D88021D7791}</Project>
+      <Name>EasySubtitle.Console</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EasySubtitle.ShellExtension\EasySubtitle.ShellExtension.csproj">
+      <Project>{4d780746-b4dd-4e3d-8cf9-aeac47919054}</Project>
+      <Name>EasySubtitle.ShellExtension</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

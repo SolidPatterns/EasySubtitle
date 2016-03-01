@@ -17,14 +17,15 @@ namespace EasySubtitle.Tests
         private ISubtitleService _subtitleService;
         private readonly List<string> mediaPaths = new List<string>
         {
-            "E:/Videos/Series/Suits/Suits.S05E13.1080p.WEB-DL.DD5.1.H264-RARBG.mkv",
-            "E:/Videos/Series/Suits/Suits.S05E14.1080p.WEB-DL.DD5.1.H264-RARBG.mkv",
-            "E:/Videos/Series/Suits/Suits.S05E15.1080p.WEB-DL.DD5.1.H264-RARBG.mkv"
+            "E:/Videos/Series/Sherlock/S3/Sherlock.3x03.His.Last.Vow.REPACK.720p.HDTV.x264-FoV.mkv",
+            "E:/Videos/Series/Sherlock/S3/Sherlock.3x01.The.Empty.Hearse.720p.HDTV.x264-FoV.mkv",
+            "E:/Videos/Series/Sherlock/S3/sherlock.3x02.the_sign_of_three.720p_hdtv_x264-fov.mkv"
         };
 
         [SetUp]
         public void SetUp()
         {
+            RegistryConfig.Instance.ResetToDefaults(AppDomain.CurrentDomain.BaseDirectory);
             _subtitleService = EasySubtitleFactory.Instance.GetSubtitleService();
         }
 
